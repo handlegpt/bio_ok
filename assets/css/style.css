@@ -1,0 +1,1625 @@
+/* OK.link 自定义样式 */
+
+/* Logo和副标题样式 */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.logo-container:hover {
+    transform: translateY(-1px);
+}
+
+.logo-container:hover .logo-main {
+    color: #0056b3;
+}
+
+.logo-main {
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+.logo-subtitle {
+    font-size: 0.7rem;
+    color: #6c757d;
+    font-weight: 400;
+    margin-top: -2px;
+    line-height: 1.1;
+}
+
+/* 头像样式 */
+.avatar-profile {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border: 5px solid #fff;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.8s ease forwards, avatarPulse 2s ease-in-out infinite;
+    opacity: 0;
+    transform: translateY(30px);
+    cursor: pointer;
+}
+
+.avatar-profile:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+    animation-play-state: paused;
+}
+
+/* 头像脉冲动画 */
+@keyframes avatarPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+}
+
+/* 暗黑模式下的头像样式 */
+[data-theme="dark"] .avatar-profile {
+    border-color: #343a40;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .avatar-profile:hover {
+    border-color: #6ea8fe;
+    box-shadow: 0 10px 25px rgba(110, 168, 254, 0.2);
+}
+
+/* 技能标签样式 */
+.skill-tag {
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(13, 110, 253, 0.2);
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.skill-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+    background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.skill-tag:nth-child(1) { animation-delay: 0.1s; }
+.skill-tag:nth-child(2) { animation-delay: 0.2s; }
+.skill-tag:nth-child(3) { animation-delay: 0.3s; }
+.skill-tag:nth-child(4) { animation-delay: 0.4s; }
+.skill-tag:nth-child(5) { animation-delay: 0.5s; }
+.skill-tag:nth-child(6) { animation-delay: 0.6s; }
+
+/* 兴趣爱好标签样式 */
+.interest-tag {
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(108, 117, 125, 0.2);
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* 工具中心分页样式 */
+#realtime-container {
+    min-height: 200px;
+}
+
+.realtime-card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.realtime-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.realtime-card .card-body {
+    padding: 1rem;
+}
+
+/* 工具中心网格动画 */
+.realtime-card:nth-child(1) { animation-delay: 0.1s; }
+.realtime-card:nth-child(2) { animation-delay: 0.2s; }
+.realtime-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* 工具分页样式 */
+#tools-container {
+    min-height: 200px;
+}
+
+.tool-card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.tool-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.tool-card .card-body {
+    padding: 1rem;
+}
+
+.tool-card .icon-rotate {
+    transition: transform 0.3s ease;
+}
+
+.tool-card:hover .icon-rotate {
+    transform: rotate(10deg);
+}
+
+/* 分页按钮样式 */
+#tools-pagination-dots {
+    gap: 0.5rem;
+}
+
+.pagination-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-dot.active {
+    background-color: #007bff;
+    transform: scale(1.2);
+}
+
+.pagination-dot:hover {
+    background-color: #6c757d;
+    transform: scale(1.1);
+}
+
+/* 分页信息样式 */
+#tools-pagination-info {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* 工具网格动画 */
+.tool-card:nth-child(1) { animation-delay: 0.1s; }
+.tool-card:nth-child(2) { animation-delay: 0.2s; }
+.tool-card:nth-child(3) { animation-delay: 0.3s; }
+.tool-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* 分享图片样式 */
+.share-card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.share-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.share-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.share-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.share-image-container:hover .share-image {
+    transform: scale(1.05);
+}
+
+.share-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.share-image-container:hover .share-overlay {
+    opacity: 1;
+}
+
+/* 暗黑模式下的分享卡片 */
+[data-theme="dark"] .share-card {
+    background-color: #343a40;
+    color: #fff;
+}
+
+[data-theme="dark"] .share-card .card-title {
+    color: #fff;
+}
+
+[data-theme="dark"] .share-card .card-text {
+    color: #adb5bd;
+}
+
+.interest-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.15);
+    background-color: rgba(108, 117, 125, 0.1) !important;
+    color: #495057 !important;
+}
+
+.interest-tag:nth-child(1) { animation-delay: 0.7s; }
+.interest-tag:nth-child(2) { animation-delay: 0.8s; }
+.interest-tag:nth-child(3) { animation-delay: 0.9s; }
+.interest-tag:nth-child(4) { animation-delay: 1.0s; }
+.interest-tag:nth-child(5) { animation-delay: 1.1s; }
+.interest-tag:nth-child(6) { animation-delay: 1.2s; }
+
+/* 暗黑模式下的标签样式 */
+[data-theme="dark"] .skill-tag {
+    background-color: rgba(13, 110, 253, 0.2) !important;
+    border-color: rgba(13, 110, 253, 0.3);
+    color: #6ea8fe !important;
+}
+
+[data-theme="dark"] .skill-tag:hover {
+    background-color: rgba(13, 110, 253, 0.3) !important;
+}
+
+[data-theme="dark"] .interest-tag {
+    background-color: rgba(108, 117, 125, 0.2) !important;
+    border-color: rgba(108, 117, 125, 0.3);
+    color: #adb5bd !important;
+}
+
+[data-theme="dark"] .interest-tag:hover {
+    background-color: rgba(108, 117, 125, 0.3) !important;
+    color: #dee2e6 !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .logo-container {
+        align-items: flex-start;
+    }
+    
+    .logo-main {
+        font-size: 1.1rem;
+    }
+    
+    .logo-subtitle {
+        font-size: 0.65rem;
+    }
+    
+    .skill-tag, .interest-tag {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem !important;
+    }
+    
+    .avatar-profile {
+        width: 140px;
+        height: 140px;
+        border-width: 4px;
+    }
+}
+
+/* 基础样式 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 卡片悬停效果 */
+.card {
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card:hover {
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+    transform: translateY(-8px) scale(1.02);
+}
+
+.card:hover .card-body {
+    transform: translateY(-2px);
+}
+
+/* 按钮样式增强 */
+.btn {
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+/* 头像样式 */
+.rounded-circle {
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.rounded-circle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* 导航链接样式 */
+nav a {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+nav a:hover {
+    color: #007bff !important;
+    transform: translateY(-1px);
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    background-color: #007bff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* 项目卡片特殊样式 */
+.project-card {
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border: 1px solid #e9ecef;
+    border-left: 4px solid #007bff;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #007bff, #28a745, #ffc107);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.project-card:hover {
+    border-left-color: #0056b3;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+}
+
+.project-card:hover::before {
+    opacity: 1;
+}
+
+/* 项目图标样式 */
+.project-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 确保图标显示 */
+.project-icon i {
+    color: white !important;
+    font-size: 1.2rem;
+    z-index: 2;
+    position: relative;
+}
+
+.project-icon:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 项目图标动画效果 */
+.project-icon i {
+    transition: all 0.3s ease;
+}
+
+.project-card:hover .project-icon i {
+    animation: iconPulse 0.6s ease-in-out;
+}
+
+@keyframes iconPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* 特殊图标效果 */
+.project-card:nth-child(1) .project-icon i {
+    animation: brainPulse 2s ease-in-out infinite;
+}
+
+.project-card:nth-child(2) .project-icon i {
+    animation: globeRotate 3s linear infinite;
+}
+
+.project-card:nth-child(3) .project-icon i {
+    animation: brushSway 2s ease-in-out infinite;
+}
+
+.project-card:nth-child(4) .project-icon i {
+    animation: fileBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes brainPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes globeRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes brushSway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+@keyframes fileBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+}
+
+/* 项目状态徽章 */
+.project-status .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* 项目标题 */
+.project-title {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    line-height: 1.3;
+}
+
+/* 项目描述 */
+.project-description {
+    line-height: 1.5;
+    color: #6c757d;
+}
+
+/* 项目按钮 */
+.project-btn {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.project-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* 项目URL */
+.project-url {
+    font-size: 0.8rem;
+    color: #adb5bd;
+    font-family: 'Courier New', monospace;
+}
+
+/* 项目卡片动画 */
+.project-card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* 项目卡片响应式设计 */
+@media (max-width: 768px) {
+    .project-card {
+        margin-bottom: 1rem;
+    }
+    
+    .project-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .project-title {
+        font-size: 1rem;
+    }
+    
+    .project-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .project-url {
+        font-size: 0.75rem;
+    }
+}
+
+/* 项目卡片加载动画 */
+@keyframes projectCardLoad {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.project-card.loaded {
+    animation: projectCardLoad 0.5s ease forwards;
+}
+
+/* 语言选择器样式 */
+#language-selector {
+    min-width: 80px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+#language-selector:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.dropdown-menu {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    border-radius: 0;
+}
+
+.dropdown-item:hover {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    transform: translateX(4px);
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+}
+
+/* 工具卡片特殊样式 */
+#tools .card {
+    background: linear-gradient(135deg, #fff 0%, #f1f3f4 100%);
+    border-top: 3px solid #28a745;
+}
+
+#tools .card:hover {
+    border-top-color: #1e7e34;
+    background: linear-gradient(135deg, #f1f3f4 0%, #e9ecef 100%);
+}
+
+/* 更新日志样式 */
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+/* 返回顶部按钮动画 */
+.btn.rounded-circle {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0,123,255,0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0,123,255,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0,123,255,0);
+    }
+}
+
+/* 响应式设计增强 */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .rounded-circle {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+/* 页面加载动画 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0,123,255,0.8);
+    }
+}
+
+/* 动画类 */
+.fade-in-up {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.fade-in-left {
+    animation: fadeInLeft 0.6s ease forwards;
+}
+
+.fade-in-right {
+    animation: fadeInRight 0.6s ease forwards;
+}
+
+.scale-in {
+    animation: scaleIn 0.5s ease forwards;
+}
+
+.slide-in-down {
+    animation: slideInDown 0.6s ease forwards;
+}
+
+.bounce-in {
+    animation: bounceIn 0.8s ease forwards;
+}
+
+.float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* 延迟动画 */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+
+/* 语言切换按钮样式 */
+.btn-group .btn {
+    transition: all 0.3s ease;
+    border-radius: 0.375rem !important;
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+}
+
+.btn-group .btn.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.4);
+}
+
+.btn-group .btn:not(.active) {
+    background-color: transparent;
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-group .btn:not(.active):hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 语言切换动画 */
+[data-en][data-jp] {
+    transition: all 0.3s ease;
+}
+
+/* 移动端语言切换按钮 */
+@media (max-width: 768px) {
+    .btn-group {
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-group .btn {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* 防止扩展冲突的样式 */
+body {
+    position: relative;
+}
+
+/* 确保扩展不会影响我们的布局 */
+* {
+    box-sizing: border-box;
+}
+
+/* 社交媒体图标悬停效果 */
+.text-muted:hover {
+    color: #007bff !important;
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+}
+
+/* 页脚样式 */
+footer {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-top: 1px solid #dee2e6;
+}
+
+/* 标题样式增强 */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* 文本选择样式 */
+::selection {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+}
+
+/* 增强动画效果 */
+/* 按钮动画效果 */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 头像动画 */
+.avatar-animated {
+    transition: all 0.3s ease;
+}
+
+.avatar-animated:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 30px rgba(0,123,255,0.3);
+}
+
+/* 文字打字机效果 */
+.typewriter {
+    overflow: hidden;
+    border-right: 2px solid #007bff;
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #007bff; }
+}
+
+/* 加载动画 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 滚动视差效果 */
+.parallax-bg {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* 项目卡片特殊效果 */
+#projects .card:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left-color: #0056b3;
+}
+
+#tools .card:hover {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-top-color: #1e7e34;
+}
+
+/* 文字渐入效果 */
+.text-fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.text-fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 图标旋转效果 */
+.icon-rotate:hover {
+    transform: rotate(360deg);
+    transition: transform 0.6s ease;
+}
+
+/* 波浪动画 */
+.wave {
+    animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+}
+
+/* 闪烁效果 */
+.blink {
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* 弹跳效果 */
+.bounce {
+    animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* 实时信息栏样式 */
+.realtime-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.realtime-info .card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.realtime-info .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.realtime-info .card:hover::before {
+    opacity: 1;
+}
+
+.realtime-info .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+}
+
+/* 时钟动画 */
+.clock-digit {
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.clock-digit:hover {
+    transform: scale(1.1);
+    color: #ffd700 !important;
+}
+
+/* 天气图标动画 */
+.weather-icon {
+    animation: weatherFloat 3s ease-in-out infinite;
+}
+
+@keyframes weatherFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+/* 世界时间样式 */
+.world-time-item {
+    transition: all 0.3s ease;
+}
+
+.world-time-item:hover {
+    transform: translateX(5px);
+    color: #ffd700 !important;
+}
+
+/* 信息栏响应式 */
+@media (max-width: 768px) {
+    .realtime-info .card-body {
+        padding: 1rem;
+    }
+    
+    .realtime-info .h5 {
+        font-size: 1.1rem;
+    }
+    
+    .realtime-info .h6 {
+        font-size: 0.9rem;
+    }
+}
+
+/* 加载动画 */
+.loading-dots {
+    display: inline-block;
+    animation: loadingDots 1.5s infinite;
+}
+
+@keyframes loadingDots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+
+
+/* 密码生成器样式 */
+#password-output {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    min-height: 1.5rem;
+    line-height: 1.5;
+}
+
+#copy-password-btn, #generate-password-btn {
+    background: rgba(0,0,0,0.1) !important;
+    border: 1px solid rgba(0,0,0,0.2) !important;
+    color: #333 !important;
+    transition: all 0.3s ease;
+}
+
+#copy-password-btn:hover, #generate-password-btn:hover {
+    background: rgba(0,0,0,0.2) !important;
+    transform: scale(1.05);
+}
+
+#copy-password-btn:active, #generate-password-btn:active {
+    transform: scale(0.95);
+}
+
+/* 密码强度指示器 */
+.password-strength-weak {
+    color: #dc3545;
+}
+
+.password-strength-medium {
+    color: #ffc107;
+}
+
+.password-strength-strong {
+    color: #28a745;
+}
+
+.password-strength-very-strong {
+    color: #007bff;
+}
+
+/* 滑块样式 */
+#password-length {
+    background: transparent;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#password-length::-webkit-slider-track {
+    background: rgba(0,0,0,0.2);
+    height: 4px;
+    border-radius: 2px;
+}
+
+#password-length::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ffc107;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#password-length::-webkit-slider-thumb:hover {
+    background: #e0a800;
+    transform: scale(1.1);
+}
+
+/* 密码生成器动画 */
+.password-generating {
+    animation: passwordPulse 0.5s ease-in-out;
+}
+
+@keyframes passwordPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 复制成功动画 */
+.copy-success {
+    animation: copySuccess 0.3s ease-in-out;
+}
+
+@keyframes copySuccess {
+    0% { background: rgba(40,167,69,0.2); }
+    100% { background: rgba(0,0,0,0.1); }
+}
+
+/* 实时信息卡片高度一致 */
+.realtime-info .card {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.realtime-info .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 响应式密码生成器 */
+@media (max-width: 768px) {
+    #password-output {
+        font-size: 0.8rem;
+    }
+    
+    .btn-sm {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    #password-length {
+        height: 16px;
+    }
+    
+    .realtime-info .card {
+        min-height: 180px;
+    }
+}
+
+/* 暗色主题 */
+[data-theme="dark"] {
+    --bs-body-bg: #1a1a1a;
+    --bs-body-color: #e9ecef;
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+}
+
+[data-theme="dark"] body {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: #2d2d2d !important;
+    color: #e9ecef !important;
+}
+
+[data-theme="dark"] .card {
+    background-color: #2d2d2d !important;
+    border-color: #404040 !important;
+    color: #e9ecef !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: #adb5bd !important;
+}
+
+[data-theme="dark"] .btn-outline-primary {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+[data-theme="dark"] .form-control {
+    background-color: #404040 !important;
+    border-color: #6c757d !important;
+    color: #e9ecef !important;
+}
+
+[data-theme="dark"] .form-control:focus {
+    background-color: #404040 !important;
+    border-color: #0d6efd !important;
+    color: #e9ecef !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+}
+
+[data-theme="dark"] .list-group-item {
+    background-color: #2d2d2d !important;
+    border-color: #404040 !important;
+    color: #e9ecef !important;
+}
+
+[data-theme="dark"] .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 主题切换动画 */
+.theme-transition {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 主题切换按钮样式 */
+#theme-toggle {
+    transition: all 0.3s ease;
+}
+
+#theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+#theme-icon {
+    transition: transform 0.3s ease;
+}
+
+[data-theme="dark"] #theme-icon {
+    transform: rotate(180deg);
+}
+
+/* 网络速度测试样式 */
+#start-speed-test {
+    transition: all 0.3s ease;
+}
+
+#start-speed-test:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#start-speed-test:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+/* 颜色选择器样式 */
+#color-picker {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#color-picker:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+#copy-color-btn {
+    transition: all 0.3s ease;
+}
+
+#copy-color-btn:hover {
+    transform: scale(1.05);
+}
+
+#copy-color-btn.copy-success {
+    background-color: rgba(40, 167, 69, 0.2) !important;
+    border-color: #28a745 !important;
+    color: #28a745 !important;
+}
+
+/* 实时信息卡片动画 */
+.realtime-info .card {
+    transition: all 0.3s ease;
+}
+
+.realtime-info .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* 速度测试结果动画 */
+#speed-result {
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s ease;
+}
+
+/* 颜色显示动画 */
+#color-hex, #color-rgb {
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    /* 触摸优化 */
+    .btn, .card, .list-group-item {
+        min-height: 44px; /* iOS推荐的最小触摸目标 */
+    }
+    
+    /* 移动端导航 */
+    .d-none.d-md-flex {
+        display: none !important;
+    }
+    
+    /* 移动端卡片间距 */
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    /* 移动端按钮组 */
+    .btn-group .btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    /* 移动端实时信息卡片 */
+    .realtime-info .card {
+        margin-bottom: 0.75rem;
+    }
+    
+    /* 移动端密码生成器 */
+    .input-group-sm .form-control {
+        font-size: 0.875rem;
+    }
+    
+    /* 移动端通知 */
+    .position-fixed {
+        top: 10px !important;
+        right: 10px !important;
+        left: 10px !important;
+        max-width: none !important;
+        min-width: auto !important;
+    }
+    
+    /* 移动端滚动优化 */
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 移动端字体大小调整 */
+    .h1 { font-size: 1.75rem; }
+    .h2 { font-size: 1.5rem; }
+    .h3 { font-size: 1.25rem; }
+    .h4 { font-size: 1.1rem; }
+    .h5 { font-size: 1rem; }
+    .h6 { font-size: 0.9rem; }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .btn-group .btn {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .card-body {
+        padding: 1rem 0.75rem;
+    }
+    
+    .realtime-info .row {
+        margin: 0;
+    }
+    
+    .realtime-info .col-12 {
+        padding: 0.25rem;
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .btn:hover {
+        transform: none;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+    
+    /* 增加触摸目标大小 */
+    .btn-sm {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* 优化触摸滚动 */
+    .card-body {
+        -webkit-overflow-scrolling: touch;
+    }
+}

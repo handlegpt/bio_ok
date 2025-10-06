@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Detection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .info { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>浏览器语言检测测试</h1>
+    
+    <div class="info">
+        <h3>浏览器语言信息：</h3>
+        <p><strong>navigator.language:</strong> <span id="browser-lang"></span></p>
+        <p><strong>navigator.userLanguage:</strong> <span id="user-lang"></span></p>
+        <p><strong>navigator.languages:</strong> <span id="languages"></span></p>
+    </div>
+    
+    <div class="info">
+        <h3>检测结果：</h3>
+        <p><strong>检测到的语言:</strong> <span id="detected-lang"></span></p>
+        <p><strong>将使用的界面语言:</strong> <span id="final-lang"></span></p>
+    </div>
+    
+    <div class="info">
+        <h3>测试说明：</h3>
+        <ul>
+            <li>如果浏览器语言是日语 (ja)，将显示日语界面</li>
+            <li>如果浏览器语言是其他语言，将显示英语界面</li>
+            <li>用户手动切换语言后，会保存偏好设置</li>
+        </ul>
+    </div>
+
+    <script>
+        // 显示浏览器语言信息
+        document.getElementById('browser-lang').textContent = navigator.language || 'undefined';
+        document.getElementById('user-lang').textContent = navigator.userLanguage || 'undefined';
+        document.getElementById('languages').textContent = JSON.stringify(navigator.languages) || 'undefined';
+        
+        // 语言检测函数
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage;
+            const languages = navigator.languages || [browserLang];
+            
+            for (let lang of languages) {
+                const langCode = lang.split('-')[0].toLowerCase();
+                if (langCode === 'ja') {
+                    return 'jp';
+                }
+            }
+            return 'en';
+        }
+        
+        const detectedLang = detectBrowserLanguage();
+        document.getElementById('detected-lang').textContent = detectedLang;
+        document.getElementById('final-lang').textContent = detectedLang === 'jp' ? '日语界面' : '英语界面';
+    </script>
+</body>
+</html>
+
+
