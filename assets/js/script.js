@@ -3774,9 +3774,12 @@ function initRealtimePagination() {
         
         // 初始化功能（减少异步操作）
         const initTools = () => {
-            // 初始化天气功能（只在第一次或需要时）
+            // 初始化时钟和天气（只在需要时）
             if (!window.weatherInitialized) {
-                initWeatherWithCache();
+                // 立即更新时钟
+                updateClock();
+                // 设置天气初始化标志，避免重复调用
+                window.weatherInitialized = true;
             }
             
             // 初始化密码生成器
@@ -3812,12 +3815,10 @@ function initRealtimePagination() {
             });
         };
         
-        // 使用requestAnimationFrame但减少延迟
-        requestAnimationFrame(() => {
-            initTools();
-            // 清除渲染标志
-            window.isRenderingTools = false;
-        });
+        // 立即初始化，避免延迟刷新
+        initTools();
+        // 清除渲染标志
+        window.isRenderingTools = false;
     }
     
     // 创建工具中心卡片
