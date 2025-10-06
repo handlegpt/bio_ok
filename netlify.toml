@@ -1,0 +1,14 @@
+[build]
+  command = "echo 'No build step needed for PHP'"
+  publish = "."
+
+[build.environment]
+  PHP_VERSION = "8.1"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.php"
+  status = 200
+
+[dev]
+  command = "php -S localhost:8888"

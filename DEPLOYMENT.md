@@ -1,6 +1,6 @@
 # 部署说明
 
-## GitHub Pages 部署（推荐）
+## GitHub Pages 部署
 
 ### 1. 启用GitHub Pages
 1. 进入仓库设置：`https://github.com/handlegpt/bio_ok/settings`
@@ -14,6 +14,8 @@
 2. 输入 `ok.link`
 3. 勾选 "Enforce HTTPS"
 4. 点击 "Save"
+
+**注意**: GitHub Pages 不支持PHP，已生成静态HTML版本 (`index.html`)
 
 ### 3. DNS配置
 在 `ok.link` 域名的DNS管理中添加以下记录：
@@ -49,6 +51,29 @@ TTL: 3600
 - 访问 `https://ok.link` 查看网站
 - 检查HTTPS证书是否正常
 - 测试所有功能是否正常工作
+
+## Netlify 部署（推荐，支持PHP）
+
+### 1. 连接GitHub仓库
+1. 访问 [Netlify](https://netlify.com)
+2. 点击 "New site from Git"
+3. 选择 GitHub 并授权
+4. 选择 `handlegpt/bio_ok` 仓库
+
+### 2. 配置构建设置
+- **Build command**: `echo 'No build needed'`
+- **Publish directory**: `.`
+- **PHP version**: 8.1
+
+### 3. 配置自定义域名
+1. 在 Netlify 控制台进入 "Domain settings"
+2. 添加自定义域名 `ok.link`
+3. 配置DNS记录指向 Netlify
+
+### 4. 验证部署
+- 访问 `https://ok.link` 查看网站
+- 所有PHP功能正常工作
+- 实时工具功能完整
 
 ## 本地开发
 
