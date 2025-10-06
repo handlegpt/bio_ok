@@ -3,45 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OK.link - Redirecting...</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .loading {
-            text-align: center;
-        }
-        .spinner {
-            border: 4px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top: 4px solid white;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <div class="loading">
-        <h1>OK.link</h1>
-        <div class="spinner"></div>
-        <p>Loading...</p>
-    </div>
+    <title data-en="Ok's World" data-jp="Okのセカイ">Ok's World</title>
+    <meta name="description" content="Personal tools hub and project showcase. Independent project &amp; tools collection." data-en="Personal tools hub and project showcase. Independent project &amp; tools collection." data-jp="個人ツール集とプロジェクト展示。独立したプロジェクトとツール集。">
+    
+    <!-- 性能优化 -->
+    <meta name="theme-color" content="#007bff">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://wttr.in">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    
+    <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XRVDZ4EXJ4"></script>
     <script>
-        // 立即重定向到PHP文件
-        window.location.href = 'index.php';
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XRVDZ4EXJ4');
     </script>
+    </head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm" id="header">
+        <div class="container py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="#" class="logo-container text-decoration-none" id="logo-link">
+                    <div class="logo-main h5 mb-0">OK.link</div>
+                    <div class="logo-subtitle" data-en="Independent project & tools hub" data-jp="個人プロジェクトと便利ツール集">Independent project & tools hub</div>
+                </a>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- 主题切换按钮 -->
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="theme-toggle" title="切换主题">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                    </button>
+                    <!-- 语言选择器 -->
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="language-selector" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i><span id="current-lang-text">EN</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-selector">
+                            <li><a class="dropdown-item" href="#" data-lang="en">
+                                <i class="fas fa-flag-usa me-2"></i>English
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" data-lang="jp">
+                                <i class="fas fa-flag me-2"></i>日本語
+                            </a></li>
+                        </ul>
+                    </div>
+                    <nav class="d-none d-md-flex gap-3">
+                        <a href="#projects" class="text-decoration-none text-muted" data-en="Projects" data-jp="プロジェクト">Projects</a>
+                        <a href="#tools" class="text-decoration-none text-muted" data-en="Tools" data-jp="ツール">Tools</a>
+                        <a href="#shares" class="text-decoration-none text-muted" data-en="Shares" data-jp="シェア">Shares</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- 实时信息栏 -->
+        <div class="container py-3" style="max-width:980px">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h5 fw-bold mb-0" data-en="Tools Hub" data-jp="ツールハブ">Tools Hub / ツールハブ</h2>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small" id="realtime-pagination-info" data-en="Page 1 of 2" data-jp="1ページ目（全2ページ）">Page 1 of 2</span>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="realtime-prev-btn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="realtime-next-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工具中心容器 -->
+            <div id="realtime-container">
+                <div class="row g-3" id="realtime-grid">
+                    <!-- 工具将动态加载到这里 -->
+                </div>
+            </div>
+            
+            <!-- 分页点 -->
+            <div class="d-flex justify-content-center mt-3" id="realtime-pagination-dots">
+                <!-- 分页点将在这里生成 -->
+            </div>
+        </div>
+        
+        <section class="container py-5" style="max-width:980px">
+            <!-- Hero (Biolink style) -->
+       <div class="text-center mb-5">
+                <!-- 头像 -->
+                <div class="mb-4">
+                    <img src="assets/images/avatar.jpeg" 
+                         alt="Avatar" 
+                         class="avatar-profile rounded-circle shadow-sm">
+                </div>
+                
+                <p class="text-muted mb-3">
+                    <span id="bio-en">Living in Japan, love sushi🍣 & Korean dramas. Married, father of two children.<br>Trying to do something great with AI. AI is changing the world.<br>Life is not easy, but I love exploring new things and embracing challenges.</span><br>
+                    <span id="bio-jp" style="display: none;">日本在住、寿司🍣と韓国ドラマが好き。既婚、二児の父。<br>AIで何か素晴らしいことをしようとしています。AIが世界を変えている。<br>生活は簡単ではありませんが、新しいことを学び、挑戦するのが好きです。</span>
+                </p>
+                
+                <!-- 技能标签 -->
+                <div class="mb-3">
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill skill-tag" 
+                              data-en="Web Development" 
+                              data-jp="Web開発"
+>
+                            Web Development                        </span>
+                                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill skill-tag" 
+                              data-en="AI &amp; Machine Learning" 
+                              data-jp="AI・機械学習"
+>
+                            AI &amp; Machine Learning                        </span>
+                                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill skill-tag" 
+                              data-en="PHP &amp; JavaScript" 
+                              data-jp="PHP・JavaScript"
+>
+                            PHP &amp; JavaScript                        </span>
+                                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill skill-tag" 
+                              data-en="UI/UX Design" 
+                              data-jp="UI/UXデザイン"
+>
+                            UI/UX Design                        </span>
+                                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill skill-tag" 
+                              data-en="Project Management" 
+                              data-jp="プロジェクト管理"
+>
+                            Project Management                        </span>
+                                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill skill-tag" 
+                              data-en="Multilingual" 
+                              data-jp="多言語対応"
+>
+                            Multilingual                        </span>
+                                            </div>
+                </div>
+                
+                <!-- 兴趣爱好 -->
+                <div class="mb-3">
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill interest-tag" 
+                              data-en="🍣 Sushi &amp; Japanese Cuisine" 
+                              data-jp="🍣 寿司・日本料理"
+>
+                            🍣 Sushi &amp; Japanese Cuisine                        </span>
+                                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill interest-tag" 
+                              data-en="📺 Korean Dramas &amp; Movies" 
+                              data-jp="📺 韓国ドラマ・映画"
+>
+                            📺 Korean Dramas &amp; Movies                        </span>
+                                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill interest-tag" 
+                              data-en="🤖 AI &amp; Technology Trends" 
+                              data-jp="🤖 AI・技術トレンド"
+>
+                            🤖 AI &amp; Technology Trends                        </span>
+                                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill interest-tag" 
+                              data-en="🌏 Travel &amp; Culture" 
+                              data-jp="🌏 旅行・文化"
+>
+                            🌏 Travel &amp; Culture                        </span>
+                                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill interest-tag" 
+                              data-en="👨‍👩‍👧‍👦 Family Time" 
+                              data-jp="👨‍👩‍👧‍👦 家族時間"
+>
+                            👨‍👩‍👧‍👦 Family Time                        </span>
+                                                <span class="badge bg-light text-dark px-3 py-2 rounded-pill interest-tag" 
+                              data-en="📚 Continuous Learning" 
+                              data-jp="📚 継続学習"
+>
+                            📚 Continuous Learning                        </span>
+                                            </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                    <a href="#projects" class="btn btn-primary rounded-pill px-4" data-en="My Projects" data-jp="プロジェクト">My Projects / プロジェクト</a>
+                    <a href="#tools" class="btn btn-outline-primary rounded-pill px-4" data-en="Tools" data-jp="ツール">Tools / ツール</a>
+                    <button class="btn btn-light rounded-pill px-4" id="show-email-qr" data-en="Contact" data-jp="お問い合わせ">Contact</button>
+                </div>
+                <div class="mt-3">
+                    <a href="https://facebook.com/" class="text-muted mx-2"><i class="fab fa-facebook"></i></a>
+                    <a href="https://ok.link" class="text-muted mx-2"><i class="fa fa-globe"></i></a>
+                </div>
+            </div>
+
+            <!-- Projects -->
+            <div id="projects" class="mb-5">
+                <h2 class="h5 fw-bold mb-3" data-en="Projects" data-jp="プロジェクト">Projects / プロジェクト</h2>
+                <div class="row g-3">
+                                            <div class="col-12 col-md-6">
+                            <div class="card project-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between mb-3">
+                                        <div class="project-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                            <i class="fas fa-brain"></i>
+                                        </div>
+                                        <div class="project-status">
+                                                                                            <span class="badge bg-success">
+                                                    <i class="fas fa-circle me-1"></i>
+                                                    <span data-en="Active" data-jp="アクティブ">Active</span>
+                                                </span>
+                                                                                    </div>
+                                    </div>
+                                    
+                                    <h3 class="h6 fw-bold mb-2 project-title">KeKi AI</h3>
+                                    
+                                    <p class="small text-muted mb-3 project-description">
+                                        <span class="project-desc-en">All-in-one platform to generate AI content</span>
+                                        <span class="project-desc-jp" style="display: none;">AIコンテンツ生成のオールインワンプラットフォーム</span>
+                                    </p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a class="btn btn-sm btn-primary project-btn" href="https://keki.ai/" target="_blank" rel="noopener">
+                                            <i class="fas fa-external-link-alt me-1"></i>
+                                            <span data-en="Visit" data-jp="訪問">Visit</span>
+                                        </a>
+                                        <small class="text-muted project-url">keki.ai</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            <div class="col-12 col-md-6">
+                            <div class="card project-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between mb-3">
+                                        <div class="project-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                                            <i class="fas fa-paint-brush"></i>
+                                        </div>
+                                        <div class="project-status">
+                                                                                            <span class="badge bg-success">
+                                                    <i class="fas fa-circle me-1"></i>
+                                                    <span data-en="Active" data-jp="アクティブ">Active</span>
+                                                </span>
+                                                                                    </div>
+                                    </div>
+                                    
+                                    <h3 class="h6 fw-bold mb-2 project-title">Och.ai</h3>
+                                    
+                                    <p class="small text-muted mb-3 project-description">
+                                        <span class="project-desc-en">AI manga &amp; story generator</span>
+                                        <span class="project-desc-jp" style="display: none;">AIマンガ・ストーリー生成</span>
+                                    </p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a class="btn btn-sm btn-primary project-btn" href="https://och.ai" target="_blank" rel="noopener">
+                                            <i class="fas fa-external-link-alt me-1"></i>
+                                            <span data-en="Visit" data-jp="訪問">Visit</span>
+                                        </a>
+                                        <small class="text-muted project-url">och.ai</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            <div class="col-12 col-md-6">
+                            <div class="card project-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between mb-3">
+                                        <div class="project-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                                            <i class="fas fa-file-alt"></i>
+                                        </div>
+                                        <div class="project-status">
+                                                                                            <span class="badge bg-success">
+                                                    <i class="fas fa-circle me-1"></i>
+                                                    <span data-en="Active" data-jp="アクティブ">Active</span>
+                                                </span>
+                                                                                    </div>
+                                    </div>
+                                    
+                                    <h3 class="h6 fw-bold mb-2 project-title">WeCV.ai</h3>
+                                    
+                                    <p class="small text-muted mb-3 project-description">
+                                        <span class="project-desc-en">AI resume builder</span>
+                                        <span class="project-desc-jp" style="display: none;">AI履歴書ジェネレーター</span>
+                                    </p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a class="btn btn-sm btn-primary project-btn" href="https://wecv.ai" target="_blank" rel="noopener">
+                                            <i class="fas fa-external-link-alt me-1"></i>
+                                            <span data-en="Visit" data-jp="訪問">Visit</span>
+                                        </a>
+                                        <small class="text-muted project-url">wecv.ai</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                    </div>
+            </div>
+
+            <!-- Tools -->
+            <div id="tools" class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 fw-bold mb-0" data-en="Useful Tools" data-jp="便利ツール">Useful Tools / 便利ツール</h2>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small" id="tools-pagination-info" data-en="Page 1 of 1" data-jp="1ページ目（全1ページ）">Page 1 of 1</span>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="tools-prev-btn" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="tools-next-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tools Container -->
+                <div id="tools-container">
+                    <div class="row g-3" id="tools-grid">
+                        <!-- Tools will be dynamically loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Pagination Dots -->
+                <div class="d-flex justify-content-center mt-3" id="tools-pagination-dots">
+                    <!-- Pagination dots will be generated here -->
+                </div>
+            </div>
+
+            <!-- Share Images -->
+            <div id="shares" class="mb-5">
+                <h2 class="h5 fw-bold mb-3" data-en="Recent Shares" data-jp="最近のシェア">Recent Shares / 最近のシェア</h2>
+                                    <div class="row g-4">
+                                                    <div class="col-12 col-md-6">
+                                <div class="card share-card h-100">
+                                    <div class="share-image-container">
+                                        <img src="assets/images/sushi.jpeg" 
+                                             alt="kurasushi in Tokyo" 
+                                             class="share-image"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
+                                        <div class="share-overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span class="share-title-en">kurasushi in Tokyo</span>
+                                            <span class="share-title-jp" style="display: none;">東京のくら寿司</span>
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="share-desc-en">Enjoying delicious sushi at Kura Sushi in Tokyo. The conveyor belt sushi experience is always fun and the quality is amazing!</span>
+                                            <span class="share-desc-jp" style="display: none;">東京のくら寿司で美味しい寿司を楽しんでいます。回転寿司の体験はいつも楽しく、品質も素晴らしいです！</span>
+                                        </p>
+                                        <small class="text-muted">2025-05</small>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <div class="col-12 col-md-6">
+                                <div class="card share-card h-100">
+                                    <div class="share-image-container">
+                                        <img src="assets/images/hongkongsea.jpeg" 
+                                             alt="travel in hongkong" 
+                                             class="share-image"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
+                                        <div class="share-overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span class="share-title-en">travel in hongkong</span>
+                                            <span class="share-title-jp" style="display: none;">香港旅行</span>
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="share-desc-en">Beautiful view of Hong Kong&#039;s coastline. The city skyline against the sea is absolutely breathtaking and the food scene is incredible!</span>
+                                            <span class="share-desc-jp" style="display: none;">香港の海岸線の美しい景色。海に映える都市のスカイラインは絶景で、食べ物のシーンも素晴らしいです！</span>
+                                        </p>
+                                        <small class="text-muted">2024-07</small>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <div class="col-12 col-md-6">
+                                <div class="card share-card h-100">
+                                    <div class="share-image-container">
+                                        <img src="assets/images/malasia.jpeg" 
+                                             alt="Malaysia travel last year" 
+                                             class="share-image"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
+                                        <div class="share-overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span class="share-title-en">Malaysia travel last year</span>
+                                            <span class="share-title-jp" style="display: none;">去年のマレーシア旅行</span>
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="share-desc-en">Amazing trip to Malaysia last year! The diverse culture, delicious street food, and beautiful tropical landscapes made it an unforgettable experience.</span>
+                                            <span class="share-desc-jp" style="display: none;">去年のマレーシア旅行は素晴らしかった！多様な文化、美味しい屋台料理、美しい熱帯の風景で、忘れられない体験でした。</span>
+                                        </p>
+                                        <small class="text-muted">2024-09</small>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <div class="col-12 col-md-6">
+                                <div class="card share-card h-100">
+                                    <div class="share-image-container">
+                                        <img src="assets/images/tokyomarry.jpeg" 
+                                             alt="Wedding ceremony at Tokyo Aquarium" 
+                                             class="share-image"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
+                                        <div class="share-overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span class="share-title-en">Wedding ceremony at Tokyo Aquarium</span>
+                                            <span class="share-title-jp" style="display: none;">東京水族館での結婚式</span>
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="share-desc-en">Visiting Tokyo Aquarium and witnessed a beautiful wedding ceremony! The couple chose such a unique and romantic venue surrounded by marine life. It was truly magical!</span>
+                                            <span class="share-desc-jp" style="display: none;">東京水族館を訪れた時、美しい結婚式を目撃しました！カップルは海洋生物に囲まれたこんなにユニークでロマンチックな会場を選んだのです。本当に魔法のような光景でした！</span>
+                                        </p>
+                                        <small class="text-muted">2025-06</small>
+                                    </div>
+                                </div>
+                            </div>
+                                            </div>
+                            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4">
+        <div class="container text-center">
+            <div class="text-muted small mb-2" data-en="© 2025 OK.link. All rights reserved." data-jp="© 2025 OK.link. 全著作権所有。">
+                © 2025 OK.link. All rights reserved.
+            </div>
+                            <div class="text-center mt-3 mb-3 small text-muted">
+                    <span class="disclaimer-en">Disclaimer: OK.link is an independent service, not affiliated with OKX (okx.com) or OKLink (oklink.com).</span>
+                    <span class="disclaimer-jp" style="display: none;">免責事項：OK.link は独立したサービスであり、OKX (okx.com) または OKLink (oklink.com) とは関係ありません。</span>
+                </div>
+                    </div>
+    </footer>
+
+    <!-- 邮箱二维码模态框 -->
+    <div class="modal fade" id="emailQRModal" tabindex="-1" aria-labelledby="emailQRModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailQRModalLabel" data-en="Contact Email" data-jp="連絡先メール">Contact Email</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <div id="email-qr-code" style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <div class="text-muted" data-en="Loading QR Code..." data-jp="QRコードを読み込み中...">Loading QR Code...</div>
+                        </div>
+                    </div>
+                    <p class="small text-muted mb-3" data-en="Scan the QR code to get the email address" data-jp="QRコードをスキャンしてメールアドレスを取得">Scan the QR code to get the email address</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-primary btn-sm" id="copy-email-btn" style="display: none;">
+                            <i class="fas fa-copy me-1"></i><span data-en="Copy Email" data-jp="メールをコピー">Copy Email</span>
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" id="download-email-qr-btn" style="display: none;">
+                            <i class="fas fa-download me-1"></i><span data-en="Download QR" data-jp="QRをダウンロード">Download QR</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 隐藏的邮箱地址数据 -->
+    <div id="email-data" data-email="hello@ok.link" style="display: none;"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
