@@ -3754,6 +3754,7 @@ function initRealtimePagination() {
         const endIndex = startIndex + toolsPerPage;
         const pageTools = realtimeTools.slice(startIndex, endIndex);
         
+        // 直接更新内容，避免闪烁
         realtimeGrid.innerHTML = '';
         
         pageTools.forEach((tool, index) => {
@@ -3761,7 +3762,7 @@ function initRealtimePagination() {
             realtimeGrid.appendChild(toolCard);
         });
         
-        // 立即触发动画，不使用requestAnimationFrame
+        // 立即显示所有卡片
         const cards = realtimeGrid.querySelectorAll('.realtime-card');
         cards.forEach((card, index) => {
             card.style.opacity = '1';

@@ -117,9 +117,8 @@
     border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .realtime-card:hover {
@@ -131,10 +130,7 @@
     padding: 1rem;
 }
 
-/* 工具中心网格动画 */
-.realtime-card:nth-child(1) { animation-delay: 0.1s; }
-.realtime-card:nth-child(2) { animation-delay: 0.2s; }
-.realtime-card:nth-child(3) { animation-delay: 0.3s; }
+/* 工具中心网格动画 - 已移除延迟动画 */
 
 /* 工具分页样式 */
 #tools-container {
