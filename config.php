@@ -67,15 +67,6 @@ $projects = [
         'color' => 'linear-gradient(135deg, #667eea, #764ba2)'
     ],
     [
-        'title' => 'Nomad.now',
-        'en' => 'Digital nomad visas & COL insights',
-        'jp' => 'デジタルノマドのビザ・生活費情報',
-        'url' => 'https://nomad.now',
-        'status' => 'active',
-        'icon' => 'fas fa-globe-americas',
-        'color' => 'linear-gradient(135deg, #f093fb, #f5576c)'
-    ],
-    [
         'title' => 'Och.ai',
         'en' => 'AI manga & story generator',
         'jp' => 'AIマンガ・ストーリー生成',
