@@ -3761,15 +3761,11 @@ function initRealtimePagination() {
             realtimeGrid.appendChild(toolCard);
         });
         
-        // 触发动画（减少延迟）
-        requestAnimationFrame(() => {
-            const cards = realtimeGrid.querySelectorAll('.realtime-card');
-            cards.forEach((card, index) => {
-                requestAnimationFrame(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                });
-            });
+        // 立即触发动画，不使用requestAnimationFrame
+        const cards = realtimeGrid.querySelectorAll('.realtime-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
         });
         
         // 初始化功能（减少异步操作）
