@@ -53,10 +53,7 @@ header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'uns
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '<?php echo htmlspecialchars($config['google_analytics_id'], ENT_QUOTES, 'UTF-8') ?>', {
-            page_title: document.title,
-            page_location: window.location.href
-        });
+        gtag('config', '<?php echo htmlspecialchars($config['google_analytics_id'], ENT_QUOTES, 'UTF-8') ?>');
     </script>
     <?php endif; ?>
 </head>
