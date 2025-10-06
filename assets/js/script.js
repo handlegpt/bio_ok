@@ -3771,13 +3771,42 @@ function initRealtimePagination() {
         
         // 初始化功能（减少异步操作）
         const initTools = () => {
-            // 初始化时钟和天气（只在需要时）
-            if (!window.weatherInitialized) {
-                // 立即更新时钟
-                updateClock();
-                // 设置天气初始化标志，避免重复调用
-                window.weatherInitialized = true;
-            }
+            // 立即更新时钟
+            updateClock();
+            
+            // 初始化天气功能
+            setTimeout(() => {
+                // 检查是否有缓存的天气数据
+                const cached = localStorage.getItem('weather_cache');
+                if (cached) {
+                    try {
+                        const data = JSON.parse(cached);
+                        const now = Date.now();
+                        const CACHE_DURATION = 10 * 60 * 1000; // 10分钟缓存
+                        
+                        if (now - data.timestamp < CACHE_DURATION) {
+                            // 使用缓存数据
+                            displayWeatherData(data.weather, data.city);
+                            console.log('Tools Hub: 使用缓存的天气数据', data);
+                            return;
+                        }
+                    } catch (error) {
+                        console.log('Tools Hub: 解析天气缓存失败', error);
+                    }
+                }
+                
+                // 如果没有缓存或缓存过期，获取新数据
+                if (typeof getUserLocationAndWeather === 'function') {
+                    getUserLocationAndWeather().then(result => {
+                        if (result && result.weather) {
+                            displayWeatherData(result.weather, result.city);
+                            console.log('Tools Hub: 获取新天气数据', result);
+                        }
+                    }).catch(error => {
+                        console.log('Tools Hub: 获取天气失败', error);
+                    });
+                }
+            }, 200);
             
             // 初始化密码生成器
             const passwordCards = realtimeGrid.querySelectorAll('.realtime-card');
