@@ -5,21 +5,15 @@
 [build.environment]
   PHP_VERSION = "8.1"
 
-# 处理所有请求到index.php
-[[redirects]]
-  from = "/*"
-  to = "/index.php"
-  status = 200
-
 # 确保PHP文件被正确处理
 [[headers]]
   for = "*.php"
   [headers.values]
     Content-Type = "text/html; charset=utf-8"
 
-# 处理根目录
+# 处理所有请求到index.php
 [[redirects]]
-  from = "/"
+  from = "/*"
   to = "/index.php"
   status = 200
 
