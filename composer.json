@@ -1,0 +1,11 @@
+{
+    "name": "ok-link/personal-website",
+    "description": "Personal biolink website with tools hub",
+    "type": "project",
+    "require": {
+        "php": ">=8.1"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

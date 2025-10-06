@@ -17,5 +17,11 @@
   to = "/index.php"
   status = 200
 
+# 确保根目录重定向
+[[redirects]]
+  from = "/"
+  to = "/index.php"
+  status = 200
+
 [dev]
   command = "php -S localhost:8888"
