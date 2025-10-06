@@ -1,5 +1,55 @@
 # 部署说明
 
+## GitHub Pages 部署（推荐）
+
+### 1. 启用GitHub Pages
+1. 进入仓库设置：`https://github.com/handlegpt/bio_ok/settings`
+2. 滚动到 "Pages" 部分
+3. 选择 "Deploy from a branch"
+4. 选择 `main` 分支
+5. 点击 "Save"
+
+### 2. 配置自定义域名 ok.link
+1. 在 Pages 设置中找到 "Custom domain"
+2. 输入 `ok.link`
+3. 勾选 "Enforce HTTPS"
+4. 点击 "Save"
+
+### 3. DNS配置
+在 `ok.link` 域名的DNS管理中添加以下记录：
+
+```
+类型: CNAME
+名称: www
+值: handlegpt.github.io
+TTL: 3600
+
+类型: A
+名称: @
+值: 185.199.108.153
+TTL: 3600
+
+类型: A
+名称: @
+值: 185.199.109.153
+TTL: 3600
+
+类型: A
+名称: @
+值: 185.199.110.153
+TTL: 3600
+
+类型: A
+名称: @
+值: 185.199.111.153
+TTL: 3600
+```
+
+### 4. 验证部署
+- 访问 `https://ok.link` 查看网站
+- 检查HTTPS证书是否正常
+- 测试所有功能是否正常工作
+
 ## 本地开发
 
 ### 方法一：使用启动脚本（推荐）
