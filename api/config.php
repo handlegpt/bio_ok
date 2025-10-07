@@ -166,14 +166,6 @@ $shares = [
         'date' => '2024-07'
     ],
     [
-        'image' => 'assets/images/malasia.jpeg',
-        'title_en' => 'Malaysia travel last year',
-        'title_jp' => '去年のマレーシア旅行',
-        'description_en' => 'Amazing trip to Malaysia last year! The diverse culture, delicious street food, and beautiful tropical landscapes made it an unforgettable experience.',
-        'description_jp' => '去年のマレーシア旅行は素晴らしかった！多様な文化、美味しい屋台料理、美しい熱帯の風景で、忘れられない体験でした。',
-        'date' => '2024-09'
-    ],
-    [
         'image' => 'assets/images/tokyomarry.jpeg',
         'title_en' => 'Wedding ceremony at Tokyo Aquarium',
         'title_jp' => '東京水族館での結婚式',
