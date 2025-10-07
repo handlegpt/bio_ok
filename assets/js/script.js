@@ -3979,7 +3979,7 @@ function initRealtimePagination() {
             if (input && output && input.value.trim()) {
                 try {
                     const encoded = btoa(unescape(encodeURIComponent(input.value)));
-                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded">${encoded}</div>`;
+                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded text-dark">${encoded}</div>`;
                 } catch (error) {
                     output.innerHTML = `<div class="text-danger small">Encoding failed</div>`;
                 }
@@ -3995,7 +3995,7 @@ function initRealtimePagination() {
             if (input && output && input.value.trim()) {
                 try {
                     const decoded = decodeURIComponent(escape(atob(input.value)));
-                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded">${decoded}</div>`;
+                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded text-dark">${decoded}</div>`;
                 } catch (error) {
                     output.innerHTML = `<div class="text-danger small">Decoding failed</div>`;
                 }
