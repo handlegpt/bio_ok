@@ -932,9 +932,7 @@ async function fetchWeatherByLocation(location) {
         () => fetchWeatherAPIByCoords(location.lat, location.lon),
         // API 2: WeatherAPI 城市名称 (备用)
         () => fetchWeatherAPIByCity(location.city),
-        // API 3: OpenWeatherMap (备用，需要API密钥)
-        () => fetchOpenWeatherMapByCoords(location.lat, location.lon),
-        // API 4: 降级到wttr.in
+        // API 3: 降级到wttr.in
         () => fetchWttrByCoords(location.lat, location.lon)
     ];
     
@@ -1035,29 +1033,6 @@ async function fetchWttrByCoords(lat, lon) {
     return null;
 }
 
-// 使用OpenWeatherMap根据坐标获取天气（最准确）
-async function fetchOpenWeatherMapByCoords(lat, lon) {
-    // 注意：需要注册OpenWeatherMap API密钥
-    const API_KEY = 'your_openweathermap_api_key_here';
-    
-    if (API_KEY === 'your_openweathermap_api_key_here') {
-        throw new Error('需要OpenWeatherMap API密钥');
-    }
-    
-    try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=ja`);
-        if (response.ok) {
-            const data = await response.json();
-            return {
-                temp: Math.round(data.main.temp),
-                desc: data.weather[0].description
-            };
-        }
-    } catch (error) {
-        console.log('OpenWeatherMap API失败:', error);
-    }
-    return null;
-}
 
 // 使用WeatherAPI根据坐标获取天气（使用真实API密钥）
 async function fetchWeatherAPIByCoords(lat, lon) {
@@ -1177,10 +1152,7 @@ async function tryMultipleWeatherAPIs() {
         // API 2: 简单HTTP天气服务
         () => fetchSimpleWeather(),
         
-        // API 3: OpenWeatherMap (需要注册免费API密钥)
-        () => fetchOpenWeatherMap(),
-        
-        // API 4: WeatherAPI (免费，无需密钥)
+        // API 3: WeatherAPI (免费，无需密钥)
         () => fetchWeatherAPI()
     ];
     
@@ -1199,28 +1171,6 @@ async function tryMultipleWeatherAPIs() {
     return null;
 }
 
-// OpenWeatherMap API (需要免费注册获取API密钥)
-async function fetchOpenWeatherMap() {
-    // 注意：这里需要替换为真实的API密钥
-    // 注册地址：https://openweathermap.org/api
-    const API_KEY = 'your_api_key_here'; // 需要替换为真实密钥
-    
-    if (API_KEY === 'your_api_key_here') {
-        throw new Error('OpenWeatherMap API密钥未配置');
-    }
-    
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`);
-    
-    if (!response.ok) {
-        throw new Error(`OpenWeatherMap API错误: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return {
-        temp: data.main.temp,
-        desc: data.weather[0].description
-    };
-}
 
 // WeatherAPI (免费，无需密钥)
 async function fetchWeatherAPI() {
@@ -1289,16 +1239,20 @@ async function fetchSimpleWeather() {
 // 备用天气API (使用IP定位)
 async function fetchBackupWeather() {
     try {
-        // 使用IP定位获取天气
-        // OpenWeatherMap API需要真实密钥，暂时跳过
-        throw new Error('OpenWeatherMap API密钥未配置');
+        // 使用IP定位获取天气 - 降级到wttr.in
+        const response = await fetch('https://wttr.in/?format=%C+%t');
         
         if (response.ok) {
-            const data = await response.json();
-            return {
-                temp: data.main.temp,
-                desc: data.weather[0].description
-            };
+            const text = await response.text();
+            const parts = text.split(' ');
+            if (parts.length >= 2) {
+                const desc = parts[0];
+                const temp = parts[1].replace('°C', '').replace('+', '');
+                return {
+                    temp: parseInt(temp),
+                    desc: desc
+                };
+            }
         }
     } catch (error) {
         console.log('备用天气API失败:', error);
