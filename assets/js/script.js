@@ -3580,7 +3580,7 @@ function initRealtimePagination() {
         },
         {
             id: 'speed-test',
-            title: { en: 'Speed Test', jp: '速度テスト' },
+            title: { en: 'SpeedTest By CloudFlare', jp: 'CloudFlare速度テスト' },
             icon: 'fas fa-tachometer-alt',
             bgClass: 'bg-info',
             textClass: 'text-white',
