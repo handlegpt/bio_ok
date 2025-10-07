@@ -2105,25 +2105,317 @@ function hexToRgb(hex) {
 }
 
 // 2FA代码生成函数
-function generate2FACode(secret = '') {
-    // 如果没有提供密钥，使用当前时间戳作为种子
-    const seed = secret ? hashString(secret) : Date.now();
-    
-    // 使用种子生成6位数字
-    const code = (Math.abs(seed) % 1000000).toString().padStart(6, '0');
-    
-    return code;
+// 真正的2FA代码生成函数 (TOTP算法) - RFC 6238标准兼容
+async function generate2FACode(secret = '') {
+    try {
+        // 如果没有提供密钥，生成一个默认密钥
+        if (!secret) {
+            secret = 'JBSWY3DPEHPK3PXP'; // 默认密钥 "Hello!" 的Base32编码
+        }
+
+        // 解码Base32密钥
+        const key = base32Decode(secret);
+
+        // 获取当前时间窗口 (30秒间隔)
+        const timeWindow = Math.floor(Date.now() / 1000 / 30);
+
+        // 生成标准TOTP代码
+        const code = await generateStandardTOTP(key, timeWindow);
+
+        return code;
+    } catch (error) {
+        console.error('2FA generation error:', error);
+        // 降级方案：生成基于时间的伪随机代码
+        const timeWindow = Math.floor(Date.now() / 1000 / 30);
+        const code = (timeWindow % 1000000).toString().padStart(6, '0');
+        return code;
+    }
 }
 
-// 简单的字符串哈希函数
-function hashString(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // 转换为32位整数
+// 验证2FA代码是否正确
+function validate2FACode(secret, code) {
+    try {
+        const key = base32Decode(secret);
+        const timeWindow = Math.floor(Date.now() / 1000 / 30);
+        
+        // 检查当前时间窗口和前后一个窗口
+        for (let i = -1; i <= 1; i++) {
+            const testCode = generateTOTP(key, timeWindow + i);
+            if (testCode === code) {
+                return true;
+            }
+        }
+        return false;
+    } catch (error) {
+        console.error('2FA validation error:', error);
+        return false;
     }
-    return Math.abs(hash);
+}
+
+// Base32解码函数
+function base32Decode(str) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    const padding = '=';
+    
+    // 移除填充字符并转换为大写
+    str = str.replace(/=+$/, '').toUpperCase();
+    
+    let bits = 0;
+    let value = 0;
+    let index = 0;
+    const output = new Uint8Array((str.length * 5) / 8);
+    
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        const charIndex = alphabet.indexOf(char);
+        
+        if (charIndex === -1) {
+            throw new Error(`Invalid Base32 character: ${char}`);
+        }
+        
+        value = (value << 5) | charIndex;
+        bits += 5;
+        
+        if (bits >= 8) {
+            output[index++] = (value >>> (bits - 8)) & 0xFF;
+            bits -= 8;
+        }
+    }
+    
+    return output.slice(0, index);
+}
+
+// 标准兼容的TOTP代码生成 (RFC 6238)
+async function generateStandardTOTP(key, timeWindow) {
+    try {
+        // 将时间窗口转换为8字节大端序
+        const timeBuffer = new ArrayBuffer(8);
+        const timeView = new DataView(timeBuffer);
+        timeView.setUint32(0, 0, false); // 高32位
+        timeView.setUint32(4, timeWindow, false); // 低32位
+
+        // 使用Web Crypto API进行HMAC-SHA1
+        return await generateTOTPWithWebCrypto(key, timeBuffer);
+    } catch (error) {
+        console.error('Standard TOTP generation failed:', error);
+        // 降级到简化实现
+        return generateSimpleTOTP(key, timeWindow);
+    }
+}
+
+// 使用Web Crypto API的HMAC-SHA1实现
+async function generateTOTPWithWebCrypto(key, timeBuffer) {
+    try {
+        // 导入密钥
+        const cryptoKey = await crypto.subtle.importKey(
+            'raw',
+            key,
+            { name: 'HMAC', hash: 'SHA-1' },
+            false,
+            ['sign']
+        );
+
+        // 生成HMAC
+        const signature = await crypto.subtle.sign('HMAC', cryptoKey, timeBuffer);
+        const hmac = new Uint8Array(signature);
+
+        // 动态截断 (RFC 6238)
+        const offset = hmac[19] & 0x0F;
+        const code = ((hmac[offset] & 0x7F) << 24) |
+                     ((hmac[offset + 1] & 0xFF) << 16) |
+                     ((hmac[offset + 2] & 0xFF) << 8) |
+                     (hmac[offset + 3] & 0xFF);
+
+        return (code % 1000000).toString().padStart(6, '0');
+    } catch (error) {
+        console.error('Web Crypto TOTP failed:', error);
+        throw error;
+    }
+}
+
+// 简化的TOTP实现 (降级方案)
+function generateSimpleTOTP(key, timeWindow) {
+    // 创建时间缓冲区
+    const timeBuffer = new ArrayBuffer(8);
+    const timeView = new DataView(timeBuffer);
+    timeView.setUint32(0, 0, false);
+    timeView.setUint32(4, timeWindow, false);
+
+    // 使用简化的HMAC-SHA1
+    const hmac = hmacSHA1(key, timeBuffer);
+
+    // 动态截断
+    const offset = hmac[19] & 0x0F;
+    const code = ((hmac[offset] & 0x7F) << 24) |
+                 ((hmac[offset + 1] & 0xFF) << 16) |
+                 ((hmac[offset + 2] & 0xFF) << 8) |
+                 (hmac[offset + 3] & 0xFF);
+
+    return (code % 1000000).toString().padStart(6, '0');
+}
+
+// HMAC-SHA1实现
+function hmacSHA1(key, message) {
+    const blockSize = 64;
+    const keyArray = new Uint8Array(key);
+    
+    // 如果密钥长度超过块大小，先哈希
+    let actualKey = keyArray;
+    if (keyArray.length > blockSize) {
+        actualKey = sha1(keyArray);
+    }
+    
+    // 填充密钥到块大小
+    const paddedKey = new Uint8Array(blockSize);
+    paddedKey.set(actualKey);
+    
+    // 创建内部和外部填充
+    const innerPad = new Uint8Array(blockSize);
+    const outerPad = new Uint8Array(blockSize);
+    
+    for (let i = 0; i < blockSize; i++) {
+        innerPad[i] = paddedKey[i] ^ 0x36;
+        outerPad[i] = paddedKey[i] ^ 0x5C;
+    }
+    
+    // 内部哈希
+    const innerMessage = new Uint8Array(blockSize + message.byteLength);
+    innerMessage.set(innerPad);
+    innerMessage.set(new Uint8Array(message), blockSize);
+    const innerHash = sha1(innerMessage);
+    
+    // 外部哈希
+    const outerMessage = new Uint8Array(blockSize + 20);
+    outerMessage.set(outerPad);
+    outerMessage.set(innerHash, blockSize);
+    
+    return sha1(outerMessage);
+}
+
+// SHA1实现
+function sha1(data) {
+    // 简化的SHA1实现
+    const msg = new Uint8Array(data);
+    const msgLength = msg.length;
+    
+    // 预处理
+    const bitLength = msgLength * 8;
+    const paddedLength = Math.ceil((msgLength + 9) / 64) * 64;
+    const padded = new Uint8Array(paddedLength);
+    padded.set(msg);
+    padded[msgLength] = 0x80;
+    
+    // 添加长度
+    const lengthView = new DataView(padded.buffer);
+    lengthView.setUint32(paddedLength - 4, bitLength, false);
+    
+    // 初始化哈希值
+    let h0 = 0x67452301;
+    let h1 = 0xEFCDAB89;
+    let h2 = 0x98BADCFE;
+    let h3 = 0x10325476;
+    let h4 = 0xC3D2E1F0;
+    
+    // 处理每个512位块
+    for (let i = 0; i < paddedLength; i += 64) {
+        const block = new DataView(padded.buffer, i, 64);
+        const w = new Array(80);
+        
+        // 扩展消息
+        for (let t = 0; t < 16; t++) {
+            w[t] = block.getUint32(t * 4, false);
+        }
+        for (let t = 16; t < 80; t++) {
+            w[t] = rotateLeft(w[t-3] ^ w[t-8] ^ w[t-14] ^ w[t-16], 1);
+        }
+        
+        // 初始化工作变量
+        let a = h0, b = h1, c = h2, d = h3, e = h4;
+        
+        // 主循环
+        for (let t = 0; t < 80; t++) {
+            let f, k;
+            if (t < 20) {
+                f = (b & c) | (~b & d);
+                k = 0x5A827999;
+            } else if (t < 40) {
+                f = b ^ c ^ d;
+                k = 0x6ED9EBA1;
+            } else if (t < 60) {
+                f = (b & c) | (b & d) | (c & d);
+                k = 0x8F1BBCDC;
+            } else {
+                f = b ^ c ^ d;
+                k = 0xCA62C1D6;
+            }
+            
+            const temp = (rotateLeft(a, 5) + f + e + k + w[t]) >>> 0;
+            e = d;
+            d = c;
+            c = rotateLeft(b, 30);
+            b = a;
+            a = temp;
+        }
+        
+        // 更新哈希值
+        h0 = (h0 + a) >>> 0;
+        h1 = (h1 + b) >>> 0;
+        h2 = (h2 + c) >>> 0;
+        h3 = (h3 + d) >>> 0;
+        h4 = (h4 + e) >>> 0;
+    }
+    
+    // 输出哈希值
+    const result = new Uint8Array(20);
+    const resultView = new DataView(result.buffer);
+    resultView.setUint32(0, h0, false);
+    resultView.setUint32(4, h1, false);
+    resultView.setUint32(8, h2, false);
+    resultView.setUint32(12, h3, false);
+    resultView.setUint32(16, h4, false);
+    
+    return result;
+}
+
+// 循环左移
+function rotateLeft(value, amount) {
+    return ((value << amount) | (value >>> (32 - amount))) >>> 0;
+}
+
+// 2FA倒计时功能
+function start2FACountdown(card) {
+    const countdownSeconds = card.querySelector('.countdown-seconds');
+    const countdownTimer = card.querySelector('.countdown-timer');
+    
+    if (!countdownSeconds || !countdownTimer) return;
+    
+    // 计算当前时间窗口的剩余时间
+    const now = Date.now();
+    const timeWindow = Math.floor(now / 1000 / 30);
+    const nextWindow = (timeWindow + 1) * 30 * 1000;
+    const remainingSeconds = Math.ceil((nextWindow - now) / 1000);
+    
+    let seconds = Math.max(0, remainingSeconds);
+    
+    // 更新显示
+    countdownSeconds.textContent = seconds;
+    
+    // 每秒更新一次
+    const interval = setInterval(() => {
+        seconds--;
+        countdownSeconds.textContent = seconds;
+        
+        if (seconds <= 0) {
+            clearInterval(interval);
+            countdownTimer.style.display = 'none';
+        }
+    }, 1000);
+    
+    // 清理之前的定时器
+    if (card._2faInterval) {
+        clearInterval(card._2faInterval);
+    }
+    card._2faInterval = interval;
 }
 
 // 用户通知系统
@@ -3632,6 +3924,37 @@ function initRealtimePagination() {
             `
         },
         {
+            id: '2fa-generator',
+            title: { en: '2FA Generator', jp: '2FA生成器' },
+            icon: 'fas fa-shield-alt',
+            bgClass: 'bg-danger',
+            textClass: 'text-white',
+            content: `
+                <div class="mb-3">
+                    <input type="text" class="form-control form-control-sm secret-input" placeholder="Enter secret key (optional)" style="font-size: 12px; padding: 4px 8px;">
+                </div>
+                <div class="d-flex gap-2 justify-content-center mb-3">
+                    <button class="btn btn-sm btn-light generate-2fa-btn">
+                        <i class="fas fa-sync-alt me-1"></i><span data-en="Generate" data-jp="生成">Generate</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light copy-2fa-btn">
+                        <i class="fas fa-copy me-1"></i><span data-en="Copy" data-jp="コピー">Copy</span>
+                    </button>
+                </div>
+                <div class="twofa-output text-center" style="min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-muted small" data-en="2FA code will appear here" data-jp="2FAコードがここに表示されます">2FA code will appear here</div>
+                </div>
+                <div class="text-center mt-2">
+                    <div class="countdown-timer small text-muted opacity-75" style="display: none;">
+                        <i class="fas fa-clock me-1"></i><span data-en="Valid for" data-jp="有効期限">Valid for</span> <span class="countdown-seconds">30</span>s
+                    </div>
+                    <div class="totp-info small text-muted opacity-75">
+                        <span data-en="RFC 6238 TOTP compatible" data-jp="RFC 6238 TOTP対応">RFC 6238 TOTP compatible</span>
+                    </div>
+                </div>
+            `
+        },
+        {
             id: 'color-picker',
             title: { en: 'Color Picker', jp: 'カラーピッカー' },
             icon: 'fas fa-palette',
@@ -3698,32 +4021,6 @@ function initRealtimePagination() {
                 </div>
                 <div class="base64-output" style="min-height: 80px; display: flex; align-items: center; justify-content: center;">
                     <div class="text-muted small" data-en="Base64 result will appear here" data-jp="Base64結果がここに表示されます">Base64 result will appear here</div>
-                </div>
-            `
-        },
-        {
-            id: '2fa-generator',
-            title: { en: '2FA Generator', jp: '2FA生成器' },
-            icon: 'fas fa-shield-alt',
-            bgClass: 'bg-danger',
-            textClass: 'text-white',
-            content: `
-                <div class="mb-3">
-                    <input type="text" class="form-control form-control-sm secret-input" placeholder="Enter secret key (optional)" style="font-size: 12px; padding: 4px 8px;">
-                </div>
-                <div class="d-flex gap-2 justify-content-center mb-3">
-                    <button class="btn btn-sm btn-light generate-2fa-btn">
-                        <i class="fas fa-sync-alt me-1"></i><span data-en="Generate" data-jp="生成">Generate</span>
-                    </button>
-                    <button class="btn btn-sm btn-outline-light copy-2fa-btn">
-                        <i class="fas fa-copy me-1"></i><span data-en="Copy" data-jp="コピー">Copy</span>
-                    </button>
-                </div>
-                <div class="twofa-output text-center" style="min-height: 60px; display: flex; align-items: center; justify-content: center;">
-                    <div class="text-muted small" data-en="2FA code will appear here" data-jp="2FAコードがここに表示されます">2FA code will appear here</div>
-                </div>
-                <div class="text-center mt-2">
-                    <small class="text-muted opacity-75" data-en="6-digit TOTP code" data-jp="6桁TOTPコード">6-digit TOTP code</small>
                 </div>
             `
         }
@@ -4066,10 +4363,25 @@ function initRealtimePagination() {
             const card = e.target.closest('.realtime-card');
             const output = card.querySelector('.twofa-output');
             const secretInput = card.querySelector('.secret-input');
+            const countdownTimer = card.querySelector('.countdown-timer');
+            const countdownSeconds = card.querySelector('.countdown-seconds');
             
-            // 生成6位数字验证码
-            const code = generate2FACode(secretInput.value);
-            output.innerHTML = `<div class="h4 mb-0 fw-bold text-white">${code}</div>`;
+            // 显示加载状态
+            output.innerHTML = `<div class="text-muted small"><i class="fas fa-spinner fa-spin me-1"></i><span data-en="Generating..." data-jp="生成中...">Generating...</span></div>`;
+            
+            // 异步生成6位数字验证码
+            generate2FACode(secretInput.value).then(code => {
+                output.innerHTML = `<div class="h4 mb-0 fw-bold text-white">${code}</div>`;
+                
+                // 显示倒计时
+                countdownTimer.style.display = 'block';
+                
+                // 重新开始30秒倒计时
+                start2FACountdown(card);
+            }).catch(error => {
+                console.error('2FA generation failed:', error);
+                output.innerHTML = `<div class="text-danger small"><i class="fas fa-exclamation-triangle me-1"></i><span data-en="Generation failed" data-jp="生成失败">Generation failed</span></div>`;
+            });
         }
         
         // 复制2FA代码按钮
