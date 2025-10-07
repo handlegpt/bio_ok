@@ -30,7 +30,7 @@ header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'uns
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-en="Ok's World" data-jp="Okのセカイ">Ok's World</title>
+    <title data-en="OneKit Link - Building Tomorrow's Tools Today" data-jp="OneKit Link - 今日、明日のツールを構築">OneKit Link - Building Tomorrow's Tools Today</title>
     <meta name="description" content="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>" data-en="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>" data-jp="<?php echo htmlspecialchars($config['site_description_jp'], ENT_QUOTES, 'UTF-8') ?>">
     
     <!-- SEO优化 -->
@@ -43,17 +43,17 @@ header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'uns
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>">
-    <meta property="og:title" content="Ok's World - Personal Tools Hub">
+    <meta property="og:title" content="OneKit Link - Building Tomorrow's Tools Today">
     <meta property="og:description" content="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>">
     <meta property="og:image" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>/assets/images/avatar.jpeg">
-    <meta property="og:site_name" content="OK.link">
+    <meta property="og:site_name" content="OneKit Link">
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="ja_JP">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>">
-    <meta property="twitter:title" content="Ok's World - Personal Tools Hub">
+    <meta property="twitter:title" content="OneKit Link - Building Tomorrow's Tools Today">
     <meta property="twitter:description" content="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>">
     <meta property="twitter:image" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>/assets/images/avatar.jpeg">
     
