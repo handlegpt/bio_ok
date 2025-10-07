@@ -33,11 +33,49 @@ header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'uns
     <title data-en="Ok's World" data-jp="Okのセカイ">Ok's World</title>
     <meta name="description" content="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>" data-en="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>" data-jp="<?php echo htmlspecialchars($config['site_description_jp'], ENT_QUOTES, 'UTF-8') ?>">
     
+    <!-- SEO优化 -->
+    <meta name="keywords" content="personal website, tools hub, AI tools, password generator, QR code, weather, time, web development, programming">
+    <meta name="author" content="OK.link">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="en, ja">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:title" content="Ok's World - Personal Tools Hub">
+    <meta property="og:description" content="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:image" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>/assets/images/avatar.jpeg">
+    <meta property="og:site_name" content="OK.link">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ja_JP">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="twitter:title" content="Ok's World - Personal Tools Hub">
+    <meta property="twitter:description" content="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="twitter:image" content="<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>/assets/images/avatar.jpeg">
+    
     <!-- 性能优化 -->
     <meta name="theme-color" content="#007bff">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://wttr.in">
+    
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "OK.link",
+        "url": "<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>",
+        "description": "<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>",
+        "sameAs": [
+            "<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>"
+        ]
+    }
+    </script>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
