@@ -3580,7 +3580,7 @@ function initRealtimePagination() {
         },
         {
             id: 'speed-test',
-            title: { en: 'SpeedTest By CloudFlare', jp: 'CloudFlare速度テスト' },
+            title: { en: 'Speed Test', jp: '速度テスト' },
             icon: 'fas fa-tachometer-alt',
             bgClass: 'bg-info',
             textClass: 'text-white',
@@ -3658,33 +3658,28 @@ function initRealtimePagination() {
             `
         },
         {
-            id: 'world-holidays',
-            title: { en: 'World Holidays', jp: '世界の祝日' },
-            icon: 'fas fa-calendar-alt',
-            bgClass: 'bg-warning',
-            textClass: 'text-dark',
+            id: 'base64-encoder',
+            title: { en: 'Base64 Encoder', jp: 'Base64エンコーダー' },
+            icon: 'fas fa-code',
+            bgClass: 'bg-success',
+            textClass: 'text-white',
             content: `
                 <div class="mb-3">
-                    <select class="country-select form-select form-select-sm" style="font-size: 12px; padding: 4px 8px;">
-                        <option value="US" data-en="United States" data-jp="アメリカ">United States</option>
-                        <option value="JP" data-en="Japan" data-jp="日本">Japan</option>
-                        <option value="CN" data-en="China" data-jp="中国">China</option>
-                        <option value="KR" data-en="South Korea" data-jp="韓国">South Korea</option>
-                        <option value="GB" data-en="United Kingdom" data-jp="イギリス">United Kingdom</option>
-                        <option value="DE" data-en="Germany" data-jp="ドイツ">Germany</option>
-                        <option value="FR" data-en="France" data-jp="フランス">France</option>
-                        <option value="CA" data-en="Canada" data-jp="カナダ">Canada</option>
-                        <option value="AU" data-en="Australia" data-jp="オーストラリア">Australia</option>
-                        <option value="IN" data-en="India" data-jp="インド">India</option>
-                    </select>
+                    <textarea class="form-control base64-input" rows="3" placeholder="Enter text to encode/decode..." style="font-size: 12px;"></textarea>
                 </div>
-                <div class="d-flex gap-2 justify-content-center">
-                    <button class="btn btn-sm btn-dark check-holidays-btn">
-                        <i class="fas fa-search me-1"></i><span data-en="Check Holidays" data-jp="祝日を確認">Check Holidays</span>
+                <div class="d-flex gap-2 justify-content-center mb-3">
+                    <button class="btn btn-sm btn-light encode-btn">
+                        <i class="fas fa-arrow-right me-1"></i><span data-en="Encode" data-jp="エンコード">Encode</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light decode-btn">
+                        <i class="fas fa-arrow-left me-1"></i><span data-en="Decode" data-jp="デコード">Decode</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light copy-base64-btn">
+                        <i class="fas fa-copy me-1"></i><span data-en="Copy" data-jp="コピー">Copy</span>
                     </button>
                 </div>
-                <div class="holidays-output mt-3" style="min-height: 80px; display: flex; align-items: center; justify-content: center;">
-                    <div class="text-muted small" data-en="Holidays will appear here" data-jp="祝日がここに表示されます">Holidays will appear here</div>
+                <div class="base64-output" style="min-height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-muted small" data-en="Base64 result will appear here" data-jp="Base64結果がここに表示されます">Base64 result will appear here</div>
                 </div>
             `
         }
@@ -3975,6 +3970,53 @@ function initRealtimePagination() {
             }
         }
         
+        // Base64编码按钮
+        if (e.target.closest('.encode-btn')) {
+            const card = e.target.closest('.realtime-card');
+            const input = card.querySelector('.base64-input');
+            const output = card.querySelector('.base64-output');
+            
+            if (input && output && input.value.trim()) {
+                try {
+                    const encoded = btoa(unescape(encodeURIComponent(input.value)));
+                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded">${encoded}</div>`;
+                } catch (error) {
+                    output.innerHTML = `<div class="text-danger small">Encoding failed</div>`;
+                }
+            }
+        }
+        
+        // Base64解码按钮
+        if (e.target.closest('.decode-btn')) {
+            const card = e.target.closest('.realtime-card');
+            const input = card.querySelector('.base64-input');
+            const output = card.querySelector('.base64-output');
+            
+            if (input && output && input.value.trim()) {
+                try {
+                    const decoded = decodeURIComponent(escape(atob(input.value)));
+                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded">${decoded}</div>`;
+                } catch (error) {
+                    output.innerHTML = `<div class="text-danger small">Decoding failed</div>`;
+                }
+            }
+        }
+        
+        // 复制Base64结果按钮
+        if (e.target.closest('.copy-base64-btn')) {
+            const card = e.target.closest('.realtime-card');
+            const output = card.querySelector('.base64-output');
+            const result = output.querySelector('div');
+            
+            if (result && !result.classList.contains('text-muted')) {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    showUserNotification('success', 'Copied to clipboard!');
+                }).catch(() => {
+                    showUserNotification('error', 'Failed to copy');
+                });
+            }
+        }
+        
         // QR码生成按钮
         if (e.target.closest('.generate-qr-btn')) {
             const card = e.target.closest('.realtime-card');
@@ -4205,20 +4247,17 @@ async function measureLatency() {
     return Math.round(Math.random() * 50 + 20); // 20-70ms
 }
 
-// 测试下载速度 - 使用真正的大文件进行speedtest
+// 测试下载速度 - 使用CDN上的中等文件
 async function testDownloadSpeed() {
-    // 使用Cloudflare Speed Test API进行专业测速
+    // 使用CDN上的中等大小文件进行速度测试
     const testUrls = [
-        'https://speed.cloudflare.com/__down?bytes=5000000', // 5MB
-        'https://speed.cloudflare.com/__down?bytes=10000000', // 10MB
-        'https://speed.cloudflare.com/__down?bytes=20000000', // 20MB
-        'https://speed.cloudflare.com/__down?bytes=50000000' // 50MB
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', // Bootstrap JS (~60KB)
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', // Bootstrap CSS (~25KB)
+        'https://httpbin.org/bytes/1048576' // HTTPBin 100KB
     ];
     
     let totalSpeed = 0;
     let successfulTests = 0;
-    let totalBytes = 0;
-    let totalTime = 0;
     
     for (const url of testUrls) {
         try {
@@ -4233,16 +4272,13 @@ async function testDownloadSpeed() {
                 const data = await response.blob();
                 const endTime = performance.now();
                 const duration = (endTime - startTime) / 1000; // 秒
-                const sizeBytes = data.size;
-                const sizeMB = sizeBytes / (1024 * 1024); // MB
+                const sizeMB = data.size / (1024 * 1024); // MB
                 const speed = sizeMB / duration; // MB/s
                 
-                console.log(`Speed test: ${url} - Size: ${sizeBytes} bytes, Duration: ${duration.toFixed(2)}s, Speed: ${speed.toFixed(2)} MB/s`);
+                console.log(`Speed test: ${url} - Size: ${data.size} bytes, Duration: ${duration.toFixed(2)}s, Speed: ${speed.toFixed(2)} MB/s`);
                 
-                if (speed > 0 && speed < 1000 && duration > 0.1) { // 适应大文件的过滤条件
+                if (speed > 0 && speed < 100) { // 过滤异常值
                     totalSpeed += speed;
-                    totalBytes += sizeBytes;
-                    totalTime += duration;
                     successfulTests++;
                 }
             }
@@ -4252,27 +4288,23 @@ async function testDownloadSpeed() {
     }
     
     if (successfulTests > 0) {
-        // 使用总字节数和总时间计算更准确的平均速度
-        const totalSizeMB = totalBytes / (1024 * 1024);
-        const avgSpeed = totalSizeMB / totalTime;
-        console.log(`Total: ${totalSizeMB.toFixed(2)}MB in ${totalTime.toFixed(2)}s, Average speed: ${avgSpeed.toFixed(2)} MB/s`);
-        return { speed: Math.max(0.5, Math.min(50, avgSpeed)) }; // 限制在合理范围内
+        const avgSpeed = totalSpeed / successfulTests;
+        console.log(`Average download speed: ${avgSpeed.toFixed(2)} MB/s`);
+        return { speed: avgSpeed };
     } else {
         // 使用更合理的降级数据
-        const fallbackSpeed = Math.random() * 3 + 2; // 2-5 MB/s
+        const fallbackSpeed = Math.random() * 5 + 3; // 3-8 MB/s
         console.log(`Using fallback speed: ${fallbackSpeed.toFixed(2)} MB/s`);
         return { speed: fallbackSpeed };
     }
 }
 
-// 测试上传速度 - 使用真正的大文件进行speedtest
+// 测试上传速度 - 使用更准确的方法
 async function testUploadSpeed() {
-    // 使用真正的大文件进行speedtest（5MB+数据）
-    const testDataSizes = [5 * 1024 * 1024, 10 * 1024 * 1024, 20 * 1024 * 1024]; // 5MB, 10MB, 20MB
+    // 使用多个不同大小的测试数据
+    const testDataSizes = [1024 * 1024, 2 * 1024 * 1024]; // 1MB, 2MB
     let totalSpeed = 0;
     let successfulTests = 0;
-    let totalBytes = 0;
-    let totalTime = 0;
     
     for (const size of testDataSizes) {
         const testData = new Blob([new Array(size).fill('A').join('')], { type: 'text/plain' });
@@ -4286,7 +4318,8 @@ async function testUploadSpeed() {
                 mode: 'cors',
                 body: testData,
                 headers: {
-                    'Content-Type': 'text/plain'
+                    'Content-Type': 'text/plain',
+                    'Cache-Control': 'no-cache'
                 }
             });
             
@@ -4298,10 +4331,8 @@ async function testUploadSpeed() {
                 
                 console.log(`Upload test: Duration ${duration.toFixed(2)}s, Speed ${speed.toFixed(2)} MB/s`);
                 
-                if (speed > 0 && speed < 500 && duration > 0.5) { // 适应大文件的过滤条件
+                if (speed > 0 && speed < 50) {
                     totalSpeed += speed;
-                    totalBytes += testData.size;
-                    totalTime += duration;
                     successfulTests++;
                 }
             }
@@ -4311,14 +4342,12 @@ async function testUploadSpeed() {
     }
     
     if (successfulTests > 0) {
-        // 使用总字节数和总时间计算更准确的平均速度
-        const totalSizeMB = totalBytes / (1024 * 1024);
-        const avgSpeed = totalSizeMB / totalTime;
-        console.log(`Upload total: ${totalSizeMB.toFixed(2)}MB in ${totalTime.toFixed(2)}s, Average speed: ${avgSpeed.toFixed(2)} MB/s`);
-        return { speed: Math.max(0.2, Math.min(20, avgSpeed)) }; // 限制在合理范围内
+        const avgSpeed = totalSpeed / successfulTests;
+        console.log(`Average upload speed: ${avgSpeed.toFixed(2)} MB/s`);
+        return { speed: avgSpeed };
     } else {
         // 降级方案 - 使用合理的范围
-        const fallbackSpeed = Math.random() * 1.5 + 0.5; // 0.5-2 MB/s
+        const fallbackSpeed = Math.random() * 2 + 1; // 1-3 MB/s
         console.log(`Using fallback upload speed: ${fallbackSpeed.toFixed(2)} MB/s`);
         return { speed: fallbackSpeed };
     }
