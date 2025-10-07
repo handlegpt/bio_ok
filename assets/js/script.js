@@ -4207,13 +4207,12 @@ async function measureLatency() {
 
 // 测试下载速度 - 使用真正的大文件进行speedtest
 async function testDownloadSpeed() {
-    // 使用真正的大文件进行speedtest（5MB+文件）
+    // 使用Cloudflare Speed Test API进行专业测速
     const testUrls = [
         'https://speed.cloudflare.com/__down?bytes=5000000', // 5MB
         'https://speed.cloudflare.com/__down?bytes=10000000', // 10MB
         'https://speed.cloudflare.com/__down?bytes=20000000', // 20MB
-        'https://httpbin.org/bytes/5000000', // 5MB
-        'https://httpbin.org/bytes/10000000' // 10MB
+        'https://speed.cloudflare.com/__down?bytes=50000000' // 50MB
     ];
     
     let totalSpeed = 0;
