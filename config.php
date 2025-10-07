@@ -8,8 +8,8 @@
 $config = [
     'site_name' => 'OK.link',
     'site_title' => "Ok's World",
-    'site_description' => 'Personal tools hub and project showcase. Independent project & tools collection.',
-    'site_description_jp' => '個人ツール集とプロジェクト展示。独立したプロジェクトとツール集。',
+    'site_description' => 'Personal tools hub with password generator, QR code generator, 2FA generator, speed test, color picker, base64 encoder, weather & time tools. Independent project showcase.',
+    'site_description_jp' => 'パスワード生成器、QRコード生成器、2FA生成器、速度テスト、カラーピッカー、Base64エンコーダー、天気・時間ツールを備えた個人ツール集。独立したプロジェクト展示。',
     'avatar' => 'assets/images/avatar.jpeg',
     'email' => 'hello@ok.link',
     'facebook' => 'https://facebook.com/',

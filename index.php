@@ -34,7 +34,7 @@ header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'uns
     <meta name="description" content="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>" data-en="<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>" data-jp="<?php echo htmlspecialchars($config['site_description_jp'], ENT_QUOTES, 'UTF-8') ?>">
     
     <!-- SEO优化 -->
-    <meta name="keywords" content="personal website, tools hub, AI tools, password generator, QR code, weather, time, web development, programming">
+    <meta name="keywords" content="personal website, tools hub, password generator, QR code generator, 2FA generator, speed test, color picker, base64 encoder, weather, time, web development, programming, AI tools, productivity tools">
     <meta name="author" content="OK.link">
     <meta name="robots" content="index, follow">
     <meta name="language" content="en, ja">
@@ -73,6 +73,19 @@ header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'uns
         "description": "<?php echo htmlspecialchars($config['site_description'], ENT_QUOTES, 'UTF-8') ?>",
         "sameAs": [
             "<?php echo htmlspecialchars($config['website'], ENT_QUOTES, 'UTF-8') ?>"
+        ],
+        "knowsAbout": [
+            "Web Development",
+            "Programming",
+            "AI Tools",
+            "Password Security",
+            "QR Code Generation",
+            "2FA Authentication",
+            "Speed Testing",
+            "Color Design",
+            "Base64 Encoding",
+            "Weather Data",
+            "Time Management"
         ]
     }
     </script>
