@@ -3532,27 +3532,24 @@ function initRealtimePagination() {
     // 工具中心数据
     const realtimeTools = [
         {
-            id: 'local-time',
-            title: { en: 'Local Time', jp: '現地時間' },
+            id: 'local-time-weather',
+            title: { en: 'Local Time & Weather', jp: '現地時間・天気' },
             icon: 'fas fa-clock',
             bgClass: 'bg-primary',
             textClass: 'text-white',
             content: `
-                <div class="small opacity-75 mb-1 current-city">--</div>
-                <div class="current-time h5 mb-0">--:--:--</div>
-                <div class="small opacity-75 current-date">--年--月--日</div>
-            `
-        },
-        {
-            id: 'local-weather',
-            title: { en: 'Local Weather', jp: '現地天気' },
-            icon: 'fas fa-cloud-sun',
-            bgClass: 'bg-success',
-            textClass: 'text-white',
-            content: `
-                <div class="small opacity-75 mb-1 weather-city">--</div>
-                <div class="weather-temp h5 mb-0">--°C</div>
-                <div class="small opacity-75 weather-desc" data-en="Loading..." data-jp="取得中...">Loading...</div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="small opacity-75 mb-1 current-city">--</div>
+                        <div class="current-time h5 mb-0">--:--:--</div>
+                        <div class="small opacity-75 current-date">--年--月--日</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="small opacity-75 mb-1 weather-city">--</div>
+                        <div class="weather-temp h5 mb-0">--°C</div>
+                        <div class="small opacity-75 weather-desc" data-en="Loading..." data-jp="取得中...">Loading...</div>
+                    </div>
+                </div>
             `
         },
         {

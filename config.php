@@ -68,8 +68,8 @@ $projects = [
     ],
     [
         'title' => 'Och.ai',
-        'en' => 'AI manga & story generator',
-        'jp' => 'AIマンガ・ストーリー生成',
+        'en' => 'AI photo & video generation, old photo restoration',
+        'jp' => 'AI写真・動画生成、古い写真復元',
         'url' => 'https://och.ai',
         'status' => 'active',
         'icon' => 'fas fa-paint-brush',
