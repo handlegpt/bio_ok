@@ -4205,15 +4205,15 @@ async function measureLatency() {
     return Math.round(Math.random() * 50 + 20); // 20-70ms
 }
 
-// 测试下载速度 - 使用真正的大文件
+// 测试下载速度 - 使用真正的大文件进行speedtest
 async function testDownloadSpeed() {
-    // 使用真正的大文件进行更准确的速度测试（只保留MB级别文件）
+    // 使用真正的大文件进行speedtest（5MB+文件）
     const testUrls = [
-        'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js', // ~1.2MB
-        'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.13.0/dist/tf.min.js', // ~2.8MB
-        'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.min.js', // ~1.5MB
-        'https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min/ace.min.js', // ~1.1MB
-        'https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.min.js' // ~500KB
+        'https://speed.cloudflare.com/__down?bytes=5000000', // 5MB
+        'https://speed.cloudflare.com/__down?bytes=10000000', // 10MB
+        'https://speed.cloudflare.com/__down?bytes=20000000', // 20MB
+        'https://httpbin.org/bytes/5000000', // 5MB
+        'https://httpbin.org/bytes/10000000' // 10MB
     ];
     
     let totalSpeed = 0;
@@ -4240,7 +4240,7 @@ async function testDownloadSpeed() {
                 
                 console.log(`Speed test: ${url} - Size: ${sizeBytes} bytes, Duration: ${duration.toFixed(2)}s, Speed: ${speed.toFixed(2)} MB/s`);
                 
-                if (speed > 0 && speed < 100 && duration > 0.05) { // 过滤异常值，降低最小时间要求
+                if (speed > 0 && speed < 1000 && duration > 0.1) { // 适应大文件的过滤条件
                     totalSpeed += speed;
                     totalBytes += sizeBytes;
                     totalTime += duration;
@@ -4266,10 +4266,10 @@ async function testDownloadSpeed() {
     }
 }
 
-// 测试上传速度 - 使用更准确的方法
+// 测试上传速度 - 使用真正的大文件进行speedtest
 async function testUploadSpeed() {
-    // 使用更大的测试数据获得更准确的速度测量
-    const testDataSizes = [512 * 1024, 1024 * 1024, 2 * 1024 * 1024, 4 * 1024 * 1024]; // 512KB, 1MB, 2MB, 4MB
+    // 使用真正的大文件进行speedtest（5MB+数据）
+    const testDataSizes = [5 * 1024 * 1024, 10 * 1024 * 1024, 20 * 1024 * 1024]; // 5MB, 10MB, 20MB
     let totalSpeed = 0;
     let successfulTests = 0;
     let totalBytes = 0;
@@ -4299,7 +4299,7 @@ async function testUploadSpeed() {
                 
                 console.log(`Upload test: Duration ${duration.toFixed(2)}s, Speed ${speed.toFixed(2)} MB/s`);
                 
-                if (speed > 0 && speed < 100 && duration > 0.2) {
+                if (speed > 0 && speed < 500 && duration > 0.5) { // 适应大文件的过滤条件
                     totalSpeed += speed;
                     totalBytes += testData.size;
                     totalTime += duration;
