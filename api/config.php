@@ -209,8 +209,8 @@ $features = [
 
 // 免责声明配置
 $disclaimer = [
-    'en' => 'Disclaimer: OK.link is an independent service, not affiliated with OKX (okx.com) or OKLink (oklink.com).',
-    'jp' => '免責事項：OK.link は独立したサービスであり、OKX (okx.com) または OKLink (oklink.com) とは関係ありません。',
+    'en' => 'Disclaimer: OK.link is an independent personal web service, not affiliated with OKX (okx.com), OKLink (oklink.com), or any related entities.',
+    'jp' => '免責事項：OK.link は独立した個人サービスであり、OKX（okx.com）および OKLink（oklink.com）とは一切関係ありません。',
     'show_on_domains' => ['ok.link', 'www.ok.link'] // 只在指定域名显示
 ];
 
