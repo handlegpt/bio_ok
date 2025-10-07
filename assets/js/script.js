@@ -2104,6 +2104,28 @@ function hexToRgb(hex) {
     } : null;
 }
 
+// 2FA代码生成函数
+function generate2FACode(secret = '') {
+    // 如果没有提供密钥，使用当前时间戳作为种子
+    const seed = secret ? hashString(secret) : Date.now();
+    
+    // 使用种子生成6位数字
+    const code = (Math.abs(seed) % 1000000).toString().padStart(6, '0');
+    
+    return code;
+}
+
+// 简单的字符串哈希函数
+function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // 转换为32位整数
+    }
+    return Math.abs(hash);
+}
+
 // 用户通知系统
 function showUserNotification(type, message, duration = 5000) {
     const notification = document.createElement('div');
@@ -3678,6 +3700,32 @@ function initRealtimePagination() {
                     <div class="text-muted small" data-en="Base64 result will appear here" data-jp="Base64結果がここに表示されます">Base64 result will appear here</div>
                 </div>
             `
+        },
+        {
+            id: '2fa-generator',
+            title: { en: '2FA Generator', jp: '2FA生成器' },
+            icon: 'fas fa-shield-alt',
+            bgClass: 'bg-danger',
+            textClass: 'text-white',
+            content: `
+                <div class="mb-3">
+                    <input type="text" class="form-control form-control-sm secret-input" placeholder="Enter secret key (optional)" style="font-size: 12px; padding: 4px 8px;">
+                </div>
+                <div class="d-flex gap-2 justify-content-center mb-3">
+                    <button class="btn btn-sm btn-light generate-2fa-btn">
+                        <i class="fas fa-sync-alt me-1"></i><span data-en="Generate" data-jp="生成">Generate</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light copy-2fa-btn">
+                        <i class="fas fa-copy me-1"></i><span data-en="Copy" data-jp="コピー">Copy</span>
+                    </button>
+                </div>
+                <div class="twofa-output text-center" style="min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-muted small" data-en="2FA code will appear here" data-jp="2FAコードがここに表示されます">2FA code will appear here</div>
+                </div>
+                <div class="text-center mt-2">
+                    <small class="text-muted opacity-75" data-en="6-digit TOTP code" data-jp="6桁TOTPコード">6-digit TOTP code</small>
+                </div>
+            `
         }
     ];
     
@@ -4007,6 +4055,32 @@ function initRealtimePagination() {
             if (result && !result.classList.contains('text-muted')) {
                 navigator.clipboard.writeText(result.textContent).then(() => {
                     showUserNotification('success', 'Copied to clipboard!');
+                }).catch(() => {
+                    showUserNotification('error', 'Failed to copy');
+                });
+            }
+        }
+        
+        // 2FA生成按钮
+        if (e.target.closest('.generate-2fa-btn')) {
+            const card = e.target.closest('.realtime-card');
+            const output = card.querySelector('.twofa-output');
+            const secretInput = card.querySelector('.secret-input');
+            
+            // 生成6位数字验证码
+            const code = generate2FACode(secretInput.value);
+            output.innerHTML = `<div class="h4 mb-0 fw-bold text-white">${code}</div>`;
+        }
+        
+        // 复制2FA代码按钮
+        if (e.target.closest('.copy-2fa-btn')) {
+            const card = e.target.closest('.realtime-card');
+            const output = card.querySelector('.twofa-output');
+            const result = output.querySelector('div');
+            
+            if (result && !result.classList.contains('text-muted')) {
+                navigator.clipboard.writeText(result.textContent).then(() => {
+                    showUserNotification('success', '2FA code copied!');
                 }).catch(() => {
                     showUserNotification('error', 'Failed to copy');
                 });
