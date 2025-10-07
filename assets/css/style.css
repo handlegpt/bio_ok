@@ -1,35 +1,83 @@
 /* OK.link 自定义样式 */
 
-/* Logo和副标题样式 */
+/* Logo和副标题样式 - 改进版 */
 .logo-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.logo-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
 }
 
 .logo-container:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+.logo-container:hover::before {
+    opacity: 0.05;
 }
 
 .logo-container:hover .logo-main {
     color: #0056b3;
+    transform: scale(1.02);
+}
+
+.logo-container:hover .logo-subtitle {
+    color: #495057;
 }
 
 .logo-main {
-    font-weight: 700;
+    font-weight: 800;
     color: #007bff;
     margin-bottom: 0;
     line-height: 1.2;
+    transition: all 0.3s ease;
+    position: relative;
+    font-size: 1.4rem;
+}
+
+.logo-main::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    transition: width 0.3s ease;
+}
+
+.logo-container:hover .logo-main::after {
+    width: 100%;
 }
 
 .logo-subtitle {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: #6c757d;
-    font-weight: 400;
-    margin-top: -2px;
+    font-weight: 500;
+    margin-top: -1px;
     line-height: 1.1;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 /* 头像样式 */
@@ -141,9 +189,8 @@
     border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .tool-card:hover {
@@ -195,10 +242,7 @@
 }
 
 /* 工具网格动画 */
-.tool-card:nth-child(1) { animation-delay: 0.1s; }
-.tool-card:nth-child(2) { animation-delay: 0.2s; }
-.tool-card:nth-child(3) { animation-delay: 0.3s; }
-.tool-card:nth-child(4) { animation-delay: 0.4s; }
+/* 移除工具卡片的动画延迟 */
 
 /* 分享图片样式 */
 .share-card {
@@ -302,6 +346,31 @@
 [data-theme="dark"] .interest-tag:hover {
     background-color: rgba(108, 117, 125, 0.3) !important;
     color: #dee2e6 !important;
+}
+
+/* 暗色主题下的Logo样式 */
+[data-theme="dark"] .logo-main {
+    color: #4dabf7;
+}
+
+[data-theme="dark"] .logo-container:hover .logo-main {
+    color: #339af0;
+}
+
+[data-theme="dark"] .logo-subtitle {
+    color: #868e96;
+}
+
+[data-theme="dark"] .logo-container:hover .logo-subtitle {
+    color: #adb5bd;
+}
+
+[data-theme="dark"] .logo-container::before {
+    background: linear-gradient(135deg, #4dabf7, #339af0);
+}
+
+[data-theme="dark"] .logo-main::after {
+    background: linear-gradient(90deg, #4dabf7, #339af0);
 }
 
 /* 响应式设计 */

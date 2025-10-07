@@ -3361,16 +3361,12 @@ function initToolsPagination() {
             toolsGrid.appendChild(toolCard);
         });
         
-        // 触发动画
-        setTimeout(() => {
-            const cards = toolsGrid.querySelectorAll('.tool-card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
-        }, 50);
+        // 直接应用样式，不使用延迟动画
+        const cards = toolsGrid.querySelectorAll('.tool-card');
+        cards.forEach((card) => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        });
     }
     
     // 创建工具卡片
