@@ -1,0 +1,24 @@
+{
+  "functions": {
+    "index.php": {
+      "runtime": "php@8.1"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.php"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; connect-src 'self' https://api.weatherapi.com https://wttr.in https://ipapi.co https://ipinfo.io http://ip-api.com https://api.bigdatacloud.net https://api.openweathermap.org https://httpbin.org https://api.github.com https://jsonplaceholder.typicode.com https://www.random.org https://api.qrserver.com https://cdn.jsdelivr.net; frame-ancestors 'none';"
+        }
+      ]
+    }
+  ]
+}
