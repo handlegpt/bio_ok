@@ -4,10 +4,10 @@
       "runtime": "php@8.1"
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.php"
+      "source": "/(.*)",
+      "destination": "/index.php"
     }
   ],
   "headers": [
