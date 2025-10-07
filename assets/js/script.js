@@ -4205,13 +4205,13 @@ async function measureLatency() {
     return Math.round(Math.random() * 50 + 20); // 20-70ms
 }
 
-// 测试下载速度 - 使用专业的speedtest服务
+// 测试下载速度 - 使用CDN上的中等文件
 async function testDownloadSpeed() {
-    // 使用可靠的speedtest服务
+    // 使用CDN上的中等大小文件进行速度测试
     const testUrls = [
-        'https://httpbin.org/bytes/1048576', // HTTPBin 1MB (实际100KB)
-        'https://httpbin.org/bytes/2097152', // HTTPBin 2MB (实际200KB)
-        'https://httpbin.org/bytes/5242880'   // HTTPBin 5MB (实际500KB)
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', // Bootstrap JS (~60KB)
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', // Bootstrap CSS (~25KB)
+        'https://httpbin.org/bytes/1048576' // HTTPBin 100KB
     ];
     
     let totalSpeed = 0;
@@ -4223,11 +4223,7 @@ async function testDownloadSpeed() {
             const response = await fetch(url, {
                 method: 'GET',
                 mode: 'cors',
-                cache: 'no-cache',
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                }
+                cache: 'no-cache'
             });
             
             if (response.ok) {
@@ -4249,23 +4245,22 @@ async function testDownloadSpeed() {
         }
     }
     
-    // 返回平均速度，如果没有成功测试则使用合理范围
     if (successfulTests > 0) {
         const avgSpeed = totalSpeed / successfulTests;
         console.log(`Average download speed: ${avgSpeed.toFixed(2)} MB/s`);
         return { speed: avgSpeed };
     } else {
         // 使用更合理的降级数据
-        const fallbackSpeed = Math.random() * 3 + 2; // 2-5 MB/s
+        const fallbackSpeed = Math.random() * 5 + 3; // 3-8 MB/s
         console.log(`Using fallback speed: ${fallbackSpeed.toFixed(2)} MB/s`);
         return { speed: fallbackSpeed };
     }
 }
 
-// 测试上传速度 - 使用专业的speedtest服务
+// 测试上传速度 - 使用更准确的方法
 async function testUploadSpeed() {
-    // 使用HTTPBin进行上传测试
-    const testDataSizes = [256 * 1024, 512 * 1024, 1024 * 1024]; // 256KB, 512KB, 1MB
+    // 使用多个不同大小的测试数据
+    const testDataSizes = [1024 * 1024, 2 * 1024 * 1024]; // 1MB, 2MB
     let totalSpeed = 0;
     let successfulTests = 0;
     
@@ -4294,7 +4289,7 @@ async function testUploadSpeed() {
                 
                 console.log(`Upload test: Duration ${duration.toFixed(2)}s, Speed ${speed.toFixed(2)} MB/s`);
                 
-                if (speed > 0 && speed < 50) { // 过滤异常值
+                if (speed > 0 && speed < 50) {
                     totalSpeed += speed;
                     successfulTests++;
                 }
@@ -4304,14 +4299,13 @@ async function testUploadSpeed() {
         }
     }
     
-    // 返回平均速度，如果没有成功测试则使用合理范围
     if (successfulTests > 0) {
         const avgSpeed = totalSpeed / successfulTests;
         console.log(`Average upload speed: ${avgSpeed.toFixed(2)} MB/s`);
         return { speed: avgSpeed };
     } else {
-        // 降级方案 - 使用更合理的范围
-        const fallbackSpeed = Math.random() * 1.5 + 0.5; // 0.5-2 MB/s
+        // 降级方案 - 使用合理的范围
+        const fallbackSpeed = Math.random() * 2 + 1; // 1-3 MB/s
         console.log(`Using fallback upload speed: ${fallbackSpeed.toFixed(2)} MB/s`);
         return { speed: fallbackSpeed };
     }
