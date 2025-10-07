@@ -26,12 +26,12 @@ $bio = [
 // 技能标签（双语）
 $skills = [
     'en' => [
-        'Web Development', 'AI & Machine Learning', 'PHP & JavaScript', 
-        'UI/UX Design', 'Project Management', 'Multilingual'
+        'Web Development', 'AI & Machine Learning', 'AI User', 
+        'Open Source', 'Project Management', 'Multilingual'
     ],
     'jp' => [
-        'Web開発', 'AI・機械学習', 'PHP・JavaScript', 
-        'UI/UXデザイン', 'プロジェクト管理', '多言語対応'
+        'Web開発', 'AI・機械学習', 'AIユーザー', 
+        'オープンソース', 'プロジェクト管理', '多言語対応'
     ]
 ];
 
