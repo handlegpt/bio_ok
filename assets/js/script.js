@@ -1266,23 +1266,32 @@ async function fetchBackupWeather() {
 
 
 // 全局密码生成函数
-function generateRandomPassword(length) {
+function generateRandomPassword(length, includeSymbols = true) {
     const lowercase = 'abcdefghijklmnopqrstuvwxyz';
     const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const numbers = '0123456789';
     const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
     
-    const allChars = lowercase + uppercase + numbers + symbols;
+    // 根据是否包含符号选择字符集
+    const allChars = includeSymbols ? 
+        lowercase + uppercase + numbers + symbols : 
+        lowercase + uppercase + numbers;
+    
     let password = '';
     
     // 确保至少包含每种类型的字符
     password += lowercase[Math.floor(Math.random() * lowercase.length)];
     password += uppercase[Math.floor(Math.random() * uppercase.length)];
     password += numbers[Math.floor(Math.random() * numbers.length)];
-    password += symbols[Math.floor(Math.random() * symbols.length)];
+    
+    // 如果包含符号，添加符号
+    if (includeSymbols) {
+        password += symbols[Math.floor(Math.random() * symbols.length)];
+    }
     
     // 填充剩余长度
-    for (let i = 4; i < length; i++) {
+    const startIndex = includeSymbols ? 4 : 3;
+    for (let i = startIndex; i < length; i++) {
         password += allChars[Math.floor(Math.random() * allChars.length)];
     }
     
@@ -1309,6 +1318,13 @@ function copyPassword(textToCopy) {
 
 // 密码生成器功能
 function initPasswordGenerator() {
+    // 检查是否在分页系统中，如果是则跳过独立初始化
+    const realtimeGrid = document.getElementById('realtime-grid');
+    if (realtimeGrid && realtimeGrid.querySelector('.password-output')) {
+        console.log('Password generator is in pagination system, skipping independent initialization');
+        return;
+    }
+    
     // 查找分页系统中的密码生成器元素
     const passwordOutput = document.querySelector('.password-output');
     const copyBtn = document.querySelector('.copy-password-btn');
@@ -1333,7 +1349,8 @@ function initPasswordGenerator() {
     // 生成密码
     function generatePassword() {
         const length = parseInt(lengthSlider.value);
-        const password = generateRandomPassword(length);
+        const includeSymbols = document.getElementById('include-symbols').checked;
+        const password = generateRandomPassword(length, includeSymbols);
         
         passwordOutput.textContent = password;
         updatePasswordStrength(password);
@@ -1405,6 +1422,14 @@ function initPasswordGenerator() {
     copyBtn.addEventListener('click', function() {
         copyPasswordLocal();
     });
+    
+    // 符号选项变化时重新生成密码
+    const symbolCheckbox = document.getElementById('include-symbols');
+    if (symbolCheckbox) {
+        symbolCheckbox.addEventListener('change', function() {
+            generatePassword();
+        });
+    }
 }
 
 // 获取当前语言
@@ -2465,10 +2490,12 @@ function calculatePasswordStrength(password) {
     let score = 0;
     const length = password.length;
     
-    // 长度评分
-    if (length >= 8) score += 1;
-    if (length >= 12) score += 1;
-    if (length >= 16) score += 1;
+    // 长度评分 (更合理的评分)
+    if (length >= 4) score += 1;      // 基础长度
+    if (length >= 8) score += 1;      // 推荐长度
+    if (length >= 12) score += 1;     // 安全长度
+    if (length >= 16) score += 1;     // 高安全长度
+    if (length >= 20) score += 1;     // 极高安全长度
     
     // 字符类型评分
     if (/[a-z]/.test(password)) score += 1;
@@ -2476,15 +2503,29 @@ function calculatePasswordStrength(password) {
     if (/[0-9]/.test(password)) score += 1;
     if (/[^a-zA-Z0-9]/.test(password)) score += 1;
     
-    // 复杂度评分
-    if (/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/.test(password)) score += 2;
+    // 复杂度奖励 (根据包含的字符类型)
+    const hasLower = /[a-z]/.test(password);
+    const hasUpper = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSymbol = /[^a-zA-Z0-9]/.test(password);
     
-    if (score <= 3) return { 
+    // 基础复杂度奖励
+    if (hasLower && hasUpper && hasNumber) score += 1;
+    
+    // 包含符号的额外奖励
+    if (hasLower && hasUpper && hasNumber && hasSymbol) score += 1;
+    
+    // 长度奖励 (长密码额外加分)
+    if (length >= 24) score += 1;
+    if (length >= 32) score += 1;
+    
+    // 更合理的强度分级
+    if (score <= 2) return { 
         level: 'weak', 
         textEn: 'Weak', 
         textJp: '弱' 
     };
-    if (score <= 5) return { 
+    if (score <= 4) return { 
         level: 'medium', 
         textEn: 'Medium', 
         textJp: '中' 
@@ -3830,6 +3871,14 @@ function initRealtimePagination() {
                     <span class="mx-2">•</span>
                     <span class="password-strength" data-en="Medium" data-jp="中">Medium</span>
                 </div>
+                <div class="mb-3">
+                    <div class="form-check form-switch d-flex justify-content-center">
+                        <input class="form-check-input" type="checkbox" id="include-symbols" checked>
+                        <label class="form-check-label ms-2" for="include-symbols">
+                            <span data-en="Include Symbols" data-jp="特殊記号を含む">Include Symbols</span>
+                        </label>
+                    </div>
+                </div>
                 <div class="d-flex gap-2 justify-content-center">
                     <button class="btn btn-sm btn-outline-dark generate-password-btn">
                         <i class="fas fa-sync-alt me-1"></i><span data-en="Generate" data-jp="生成">Generate</span>
@@ -4121,13 +4170,83 @@ function initRealtimePagination() {
                 const lengthSlider = card.querySelector('.password-length');
                 const lengthValue = card.querySelector('.length-value');
                 const strength = card.querySelector('.password-strength');
+                const symbolCheckbox = card.querySelector('#include-symbols');
+                const generateBtn = card.querySelector('.generate-password-btn');
+                const copyBtn = card.querySelector('.copy-password-btn');
                 
                 if (output && lengthSlider && lengthValue && strength) {
                     const length = parseInt(lengthSlider.value);
-                    const password = generateRandomPassword(length);
+                    const includeSymbols = symbolCheckbox ? symbolCheckbox.checked : true;
+                    const password = generateRandomPassword(length, includeSymbols);
                     output.textContent = password;
                     lengthValue.textContent = length;
                     updatePasswordStrength(password, strength);
+                    
+                    // 先处理符号开关，确保变量在正确的作用域中
+                    let newSymbolCheckbox = null;
+                    if (symbolCheckbox) {
+                        // 移除旧的事件监听器
+                        symbolCheckbox.replaceWith(symbolCheckbox.cloneNode(true));
+                        newSymbolCheckbox = card.querySelector('#include-symbols');
+                        
+                        newSymbolCheckbox.addEventListener('change', function() {
+                            const length = parseInt(lengthSlider.value);
+                            const includeSymbols = newSymbolCheckbox.checked;
+                            const password = generateRandomPassword(length, includeSymbols);
+                            output.textContent = password;
+                            updatePasswordStrength(password, strength);
+                        });
+                    }
+                    
+                    // 添加事件监听器（先移除旧的事件监听器，避免重复绑定）
+                    if (generateBtn) {
+                        // 移除旧的事件监听器
+                        generateBtn.replaceWith(generateBtn.cloneNode(true));
+                        const newGenerateBtn = card.querySelector('.generate-password-btn');
+                        
+                        // 使用一次性事件监听器，避免重复绑定
+                        newGenerateBtn.addEventListener('click', function(event) {
+                            event.stopPropagation(); // 阻止事件冒泡
+                            const length = parseInt(lengthSlider.value);
+                            const includeSymbols = newSymbolCheckbox ? newSymbolCheckbox.checked : true;
+                            const password = generateRandomPassword(length, includeSymbols);
+                            output.textContent = password;
+                            updatePasswordStrength(password, strength);
+                        });
+                    }
+                    
+                    if (copyBtn) {
+                        // 移除旧的事件监听器
+                        copyBtn.replaceWith(copyBtn.cloneNode(true));
+                        const newCopyBtn = card.querySelector('.copy-password-btn');
+                        
+                        newCopyBtn.addEventListener('click', function() {
+                            if (output.textContent && output.textContent !== '--') {
+                                copyPassword(output.textContent);
+                                newCopyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                                newCopyBtn.classList.add('copy-success');
+                                setTimeout(() => {
+                                    newCopyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                                    newCopyBtn.classList.remove('copy-success');
+                                }, 2000);
+                            }
+                        });
+                    }
+                    
+                    if (lengthSlider) {
+                        // 移除旧的事件监听器
+                        lengthSlider.replaceWith(lengthSlider.cloneNode(true));
+                        const newLengthSlider = card.querySelector('.password-length');
+                        
+                        newLengthSlider.addEventListener('input', function() {
+                            lengthValue.textContent = newLengthSlider.value;
+                            const length = parseInt(newLengthSlider.value);
+                            const includeSymbols = newSymbolCheckbox ? newSymbolCheckbox.checked : true;
+                            const password = generateRandomPassword(length, includeSymbols);
+                            output.textContent = password;
+                            updatePasswordStrength(password, strength);
+                        });
+                    }
                 }
             });
             
