@@ -4207,11 +4207,13 @@ async function measureLatency() {
 
 // 测试下载速度 - 使用真正的大文件
 async function testDownloadSpeed() {
-    // 使用真正的大文件进行速度测试
+    // 使用真正的大文件进行更准确的速度测试（只保留MB级别文件）
     const testUrls = [
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', // ~80KB
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', // ~25KB
-        'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js' // ~87KB
+        'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js', // ~1.2MB
+        'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.13.0/dist/tf.min.js', // ~2.8MB
+        'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.min.js', // ~1.5MB
+        'https://cdn.jsdelivr.net/npm/ace-builds@1.32.7/src-min/ace.min.js', // ~1.1MB
+        'https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.min.js' // ~500KB
     ];
     
     let totalSpeed = 0;
@@ -4266,8 +4268,8 @@ async function testDownloadSpeed() {
 
 // 测试上传速度 - 使用更准确的方法
 async function testUploadSpeed() {
-    // 使用多个不同大小的测试数据
-    const testDataSizes = [256 * 1024, 512 * 1024, 1024 * 1024]; // 256KB, 512KB, 1MB
+    // 使用更大的测试数据获得更准确的速度测量
+    const testDataSizes = [512 * 1024, 1024 * 1024, 2 * 1024 * 1024, 4 * 1024 * 1024]; // 512KB, 1MB, 2MB, 4MB
     let totalSpeed = 0;
     let successfulTests = 0;
     let totalBytes = 0;
@@ -4297,7 +4299,7 @@ async function testUploadSpeed() {
                 
                 console.log(`Upload test: Duration ${duration.toFixed(2)}s, Speed ${speed.toFixed(2)} MB/s`);
                 
-                if (speed > 0 && speed < 50 && duration > 0.1) {
+                if (speed > 0 && speed < 100 && duration > 0.2) {
                     totalSpeed += speed;
                     totalBytes += testData.size;
                     totalTime += duration;
