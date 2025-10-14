@@ -236,25 +236,25 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 如果是日语，设置为日语
             if (langCode === 'ja') {
-                console.log('检测到日语浏览器，设置为日语界面');
+                // 检测到日语浏览器，设置为日语界面
                 return 'jp';
             }
         }
         
         // 默认设置为英语
-        console.log('检测到其他语言浏览器，设置为英语界面');
+        // 检测到其他语言浏览器，设置为英语界面
         return 'en';
     }
     
     // 从本地存储恢复语言偏好，如果没有则使用浏览器语言检测
     const savedLang = localStorage.getItem('preferred-language');
     if (savedLang && (savedLang === 'en' || savedLang === 'jp')) {
-        console.log('使用保存的语言偏好:', savedLang);
+        // 使用保存的语言偏好
         switchLanguage(savedLang);
     } else {
         // 没有保存的语言偏好，使用浏览器语言检测
         const detectedLang = detectBrowserLanguage();
-        console.log('浏览器语言检测结果:', detectedLang);
+        // 浏览器语言检测结果
         switchLanguage(detectedLang);
     }
     // 平滑滚动
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 防止扩展冲突
     if (typeof window.ethereum !== 'undefined') {
-        console.log('Ethereum provider detected');
+        // Ethereum provider detected
     }
 
     // 添加页面加载动画
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalDefineProperty = Object.defineProperty;
     Object.defineProperty = function(obj, prop, descriptor) {
         if (prop === 'ethereum' && obj === window) {
-            console.log('Preventing ethereum property redefinition');
+            // Preventing ethereum property redefinition
             return obj;
         }
         return originalDefineProperty.call(this, obj, prop, descriptor);
@@ -694,12 +694,12 @@ function updateCurrentCity() {
                 cityName = location.city;
                 // 只在第一次或城市名改变时打印日志
                 if (!window.lastLoggedCity || window.lastLoggedCity !== location.city) {
-                    console.log('使用缓存的城市:', location.city);
+                    // 使用缓存的城市
                     window.lastLoggedCity = location.city;
                 }
             }
         } catch (error) {
-            console.log('解析缓存位置失败:', error);
+            // 解析缓存位置失败
         }
     }
     
@@ -716,14 +716,14 @@ function updateCurrentCity() {
     
     // 如果没有缓存，尝试获取IP位置
     if (!cachedLocation) {
-        console.log('获取IP位置...');
+        // 获取IP位置
         getIPLocation().then(location => {
             if (location && location.city) {
                 // 更新所有城市元素
                 cityElements.forEach(cityElement => {
                     cityElement.textContent = location.city;
                 });
-                console.log('IP定位成功:', location.city);
+                // IP定位成功
                 
                 // 保存到缓存
                 localStorage.setItem('user_location', JSON.stringify({
@@ -737,7 +737,7 @@ function updateCurrentCity() {
                 cityElements.forEach(cityElement => {
                     cityElement.textContent = inferredCity;
                 });
-                console.log('使用現地時間推断城市:', inferredCity);
+                // 使用現地時間推断城市
                 
                 // 保存推断的城市到缓存
                 localStorage.setItem('user_location', JSON.stringify({
@@ -747,13 +747,13 @@ function updateCurrentCity() {
                 }));
             }
         }).catch(error => {
-            console.log('获取IP位置失败:', error);
+            // 获取IP位置失败
             // 使用現地時間推断位置
             const inferredCity = getCityFromLocalTime();
             cityElements.forEach(cityElement => {
                 cityElement.textContent = inferredCity;
             });
-            console.log('使用現地時間推断城市:', inferredCity);
+            // 使用現地時間推断城市
         });
     }
 }
@@ -769,7 +769,7 @@ function initWeatherWithCache() {
     
     // 检查是否已经初始化过（避免重复初始化）
     if (window.weatherInitialized) {
-        console.log('天气功能已初始化，跳过重复初始化');
+        // 天气功能已初始化，跳过重复初始化
         return;
     }
     window.weatherInitialized = true;
@@ -783,7 +783,7 @@ function initWeatherWithCache() {
         if (now - data.timestamp < CACHE_DURATION) {
             // 使用缓存数据
             displayWeatherData(data.weather, data.city);
-            console.log('使用缓存的天气数据', data);
+            // 使用缓存的天气数据
             
             // 同时更新时钟的城市名（如果还没有设置）
             const cityElements = document.querySelectorAll('.current-city');
@@ -833,7 +833,7 @@ async function getUserLocationAndWeather() {
         
         if (cachedLocation) {
             userLocation = JSON.parse(cachedLocation);
-            console.log('使用缓存的位置:', userLocation);
+            // 使用缓存的位置
         } else {
             // 获取用户位置
             userLocation = await getUserLocation();
@@ -862,7 +862,7 @@ async function getUserLocationAndWeather() {
             };
         }
     } catch (error) {
-        console.log('获取位置失败:', error);
+        // 获取位置失败
         // 降级到IP定位
         const result = await fetchWeatherByIP();
         return {
@@ -902,7 +902,7 @@ function getUserLocation() {
                 }
             },
             (error) => {
-                console.log('地理位置获取失败:', error);
+                // 地理位置获取失败
                 reject(error);
             },
             {
@@ -920,7 +920,7 @@ async function getCityNameFromCoords(lat, lon) {
         const data = await response.json();
         return data.city || data.locality || 'Unknown';
     } catch (error) {
-        console.log('获取城市名称失败:', error);
+        // 获取城市名称失败
         return 'Unknown';
     }
 }
@@ -940,11 +940,11 @@ async function fetchWeatherByLocation(location) {
         try {
             const result = await api();
             if (result) {
-                console.log('天气API成功:', result);
+                // 天气API成功
                 return result;
             }
         } catch (error) {
-            console.log('天气API失败:', error);
+            // 天气API失败
         }
     }
     
@@ -958,7 +958,7 @@ async function fetchWeatherByIP() {
         const location = await getIPLocation();
         
         if (location && location.city) {
-            console.log('IP定位成功，获取天气:', location.city);
+            // IP定位成功，获取天气
             const weather = await fetchWeatherAPIByCity(location.city);
             return {
                 weather: weather,
@@ -1557,9 +1557,10 @@ function initMobileOptimizations() {
         });
     
     // 将startSpeedTest移到全局作用域
-    
-    // 专业的速度测试（使用类似speedtest.net的方法）
-    async function performProfessionalSpeedTest() {
+}
+
+// 专业的速度测试（使用类似speedtest.net的方法）
+window.performProfessionalSpeedTest = async function() {
         try {
             // 首先尝试使用Cloudflare Speed Test API
             const cloudflareResult = await testCloudflareSpeed();
@@ -1606,7 +1607,7 @@ function initMobileOptimizations() {
                 
                 for (const url of server.urls) {
                     try {
-                        const result = await testDownloadSpeed(url, server.name);
+                        const result = await testDownloadSpeedWithParams(url, server.name);
                         if (result.speed > bestSpeed) {
                             bestSpeed = result.speed;
                             bestSpeedMbps = result.speedMbps;
@@ -1646,18 +1647,83 @@ function initMobileOptimizations() {
         }
     }
     
-    // Cloudflare Speed Test (类似speedtest.net)
-    // 将testCloudflareSpeed移到全局作用域
+// Cloudflare Speed Test (类似speedtest.net)
+window.testCloudflareSpeed = async function() {
+        try {
+            // 尝试使用Cloudflare的Speed Test API
+            const testUrls = [
+                'https://speed.cloudflare.com/__down?bytes=10485760', // 10MB
+                'https://speed.cloudflare.com/__down?bytes=52428800', // 50MB
+                'https://speed.cloudflare.com/__down?bytes=104857600' // 100MB
+            ];
+            
+            let bestSpeed = 0;
+            let bestSpeedMbps = 0;
+            let successfulTests = 0;
+            
+            for (const url of testUrls) {
+                try {
+                    const result = await testDownloadSpeedWithParams(url, 'Cloudflare');
+                    if (result.speed > bestSpeed) {
+                        bestSpeed = result.speed;
+                        bestSpeedMbps = result.speedMbps;
+                    }
+                    if (result.speed > 0) successfulTests++;
+                } catch (error) {
+                    // Cloudflare test failed
+                }
+            }
+            
+            if (successfulTests > 0) {
+                return {
+                    speed: bestSpeed,
+                    speedMbps: bestSpeedMbps
+                };
+            } else {
+                return { speed: 0, speedMbps: 0 };
+            }
+            
+        } catch (error) {
+            return { speed: 0, speedMbps: 0 };
+        }
+    }
     
-    
-    // 将testDownloadSpeed移到全局作用域
+// 将testDownloadSpeed移到全局作用域
+window.testDownloadSpeedWithParams = async function(url, serverName) {
+        const startTime = performance.now();
+        
+        try {
+            // 使用简单的fetch请求，避免CORS问题
+            const response = await fetch(url, {
+                method: 'GET',
+                mode: 'cors' // 明确指定CORS模式
+            });
+        
+            if (response.ok) {
+                const data = await response.arrayBuffer();
+                const endTime = performance.now();
+                const duration = (endTime - startTime) / 1000; // 秒
+                const speed = (data.byteLength / duration) / (1024 * 1024); // MB/s
+                const speedMbps = speed * 8; // Mbps
+                
+                console.log(`${serverName}: ${data.byteLength} bytes in ${duration.toFixed(2)}s = ${speed.toFixed(2)} MB/s`);
+                
+                return {
+                    speed: speed,
+                    speedMbps: speedMbps
+                };
+            } else {
+                throw new Error(`HTTP ${response.status}`);
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
     
     // 将performFallbackSpeedTest移到全局作用域
     
     
-    // 将measureLatency移到全局作用域
-    
-}
+// 将measureLatency移到全局作用域
 
 // 全局速度测试函数
 async function startSpeedTest() {
@@ -1768,245 +1834,7 @@ async function measureLatency() {
     return endTime - startTime;
 }
 
-// 全局专业速度测试函数
-async function performProfessionalSpeedTest() {
-    try {
-        // 首先尝试使用Cloudflare Speed Test API
-        const cloudflareResult = await testCloudflareSpeed();
-        if (cloudflareResult.speed > 0) {
-            console.log(`Cloudflare Speed Test: ${cloudflareResult.speed.toFixed(2)} MB/s (${cloudflareResult.speedMbps.toFixed(1)} Mbps)`);
-            return cloudflareResult;
-        }
-        
-        // 如果Cloudflare失败，使用其他专业测试服务器
-        const testServers = [
-            {
-                name: 'HTTPBin Large Files',
-                urls: [
-                    'https://httpbin.org/bytes/10485760', // 10MB
-                    'https://httpbin.org/bytes/52428800', // 50MB
-                    'https://httpbin.org/bytes/104857600' // 100MB
-                ]
-            },
-            {
-                name: 'GitHub Large Repos',
-                urls: [
-                    'https://api.github.com/repos/microsoft/vscode',
-                    'https://api.github.com/repos/facebook/react',
-                    'https://api.github.com/repos/torvalds/linux'
-                ]
-            },
-            {
-                name: 'JSONPlaceholder',
-                urls: [
-                    'https://jsonplaceholder.typicode.com/posts',
-                    'https://jsonplaceholder.typicode.com/comments',
-                    'https://jsonplaceholder.typicode.com/albums'
-                ]
-            }
-        ];
-        
-        let bestSpeed = 0;
-        let bestSpeedMbps = 0;
-        let successfulTests = 0;
-        let totalSpeed = 0;
-        
-        for (const server of testServers) {
-            console.log(`Testing ${server.name}...`);
-            
-            for (const url of server.urls) {
-                try {
-                    const startTime = performance.now();
-                    const response = await fetch(url, {
-                        method: 'GET',
-                        cache: 'no-cache',
-                        mode: 'cors'
-                    });
-                    
-                    if (response.ok) {
-                        const endTime = performance.now();
-                        const duration = (endTime - startTime) / 1000; // 转换为秒
-                        const contentLength = response.headers.get('content-length');
-                        
-                        if (contentLength) {
-                            const bytes = parseInt(contentLength);
-                            const speed = (bytes / (1024 * 1024)) / duration; // MB/s
-                            const speedMbps = speed * 8; // Mbps
-                            
-                            totalSpeed += speed;
-                            successfulTests++;
-                            
-                            if (speed > bestSpeed) {
-                                bestSpeed = speed;
-                                bestSpeedMbps = speedMbps;
-                            }
-                            
-                            console.log(`${server.name}: ${speed.toFixed(2)} MB/s (${speedMbps.toFixed(1)} Mbps)`);
-                        }
-                    }
-                } catch (error) {
-                    console.log(`Failed to test ${url}:`, error);
-                }
-            }
-        }
-        
-        if (successfulTests > 0) {
-            const averageSpeed = totalSpeed / successfulTests;
-            const averageSpeedMbps = averageSpeed * 8;
-            
-            console.log(`Average speed: ${averageSpeed.toFixed(2)} MB/s (${averageSpeedMbps.toFixed(1)} Mbps)`);
-            console.log(`Best speed: ${bestSpeed.toFixed(2)} MB/s (${bestSpeedMbps.toFixed(1)} Mbps)`);
-            
-            return {
-                speed: bestSpeed,
-                speedMbps: bestSpeedMbps
-            };
-        }
-        
-        return { speed: 0, speedMbps: 0 };
-    } catch (error) {
-        console.error('Professional speed test failed:', error);
-        return { speed: 0, speedMbps: 0 };
-    }
-}
-
-// 全局Cloudflare速度测试函数
-async function testCloudflareSpeed() {
-    try {
-        console.log('Testing Cloudflare Speed Test...');
-        
-        // 尝试使用Cloudflare的Speed Test API
-        const testUrls = [
-            'https://speed.cloudflare.com/__down?bytes=10485760', // 10MB
-            'https://speed.cloudflare.com/__down?bytes=52428800', // 50MB
-            'https://speed.cloudflare.com/__down?bytes=104857600' // 100MB
-        ];
-        
-        let bestSpeed = 0;
-        let bestSpeedMbps = 0;
-        let successfulTests = 0;
-        
-        for (const url of testUrls) {
-            try {
-                const result = await testDownloadSpeed(url, 'Cloudflare');
-                if (result.speed > bestSpeed) {
-                    bestSpeed = result.speed;
-                    bestSpeedMbps = result.speedMbps;
-                }
-                if (result.speed > 0) successfulTests++;
-            } catch (error) {
-                console.log(`Cloudflare test failed for ${url}:`, error);
-            }
-        }
-        
-        if (successfulTests > 0) {
-            return {
-                speed: bestSpeed,
-                speedMbps: bestSpeedMbps
-            };
-        } else {
-            return { speed: 0, speedMbps: 0 };
-        }
-        
-    } catch (error) {
-        console.log('Cloudflare Speed Test failed:', error);
-        return { speed: 0, speedMbps: 0 };
-    }
-}
-
-// 全局下载速度测试函数
-async function testDownloadSpeed(url, serverName) {
-    const startTime = performance.now();
-    
-    try {
-        // 使用简单的fetch请求，避免CORS问题
-        const response = await fetch(url, {
-            method: 'GET',
-            mode: 'cors' // 明确指定CORS模式
-        });
-    
-        if (response.ok) {
-            const data = await response.arrayBuffer();
-            const endTime = performance.now();
-            const duration = (endTime - startTime) / 1000; // 秒
-            const speed = (data.byteLength / duration) / (1024 * 1024); // MB/s
-            const speedMbps = speed * 8; // Mbps
-            
-            console.log(`${serverName}: ${data.byteLength} bytes in ${duration.toFixed(2)}s = ${speed.toFixed(2)} MB/s`);
-            
-            return {
-                speed: speed,
-                speedMbps: speedMbps
-            };
-        } else {
-            throw new Error(`HTTP ${response.status}`);
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
-// 全局备用速度测试函数
-async function performFallbackSpeedTest() {
-    console.log('Using fallback speed test...');
-    
-    // 使用支持CORS的测试URL
-    const testUrls = [
-        'https://httpbin.org/bytes/1048576', // 1MB
-        'https://httpbin.org/bytes/5242880',  // 5MB
-        'https://jsonplaceholder.typicode.com/posts',
-        'https://api.github.com/repos/microsoft/vscode'
-    ];
-    
-    let totalBytes = 0;
-    let totalTime = 0;
-    let successfulTests = 0;
-    let bestSpeed = 0;
-    
-    for (const url of testUrls) {
-        try {
-            const startTime = performance.now();
-            const response = await fetch(url, {
-                method: 'GET',
-                mode: 'cors'
-            });
-            
-            if (response.ok) {
-                const data = await response.arrayBuffer();
-                const endTime = performance.now();
-                const duration = (endTime - startTime) / 1000;
-                const speed = (data.byteLength / duration) / (1024 * 1024); // MB/s
-                
-                totalBytes += data.byteLength;
-                totalTime += duration;
-                successfulTests++;
-                
-                if (speed > bestSpeed) {
-                    bestSpeed = speed;
-                }
-                
-                console.log(`Fallback test: ${data.byteLength} bytes in ${duration.toFixed(2)}s = ${speed.toFixed(2)} MB/s`);
-            }
-        } catch (error) {
-            console.log(`Fallback test failed for ${url}:`, error);
-        }
-    }
-    
-    if (successfulTests > 0) {
-        const avgSpeed = (totalBytes / totalTime) / (1024 * 1024); // MB/s
-        const speedMbps = avgSpeed * 8; // Mbps
-        const finalSpeed = Math.max(avgSpeed, bestSpeed); // 使用平均速度和最佳速度的较大值
-        
-        console.log(`Fallback speed test: ${finalSpeed.toFixed(2)} MB/s (${speedMbps.toFixed(1)} Mbps)`);
-        
-        return {
-            speed: finalSpeed,
-            speedMbps: speedMbps
-        };
-    }
-    
-    return { speed: 0, speedMbps: 0 };
-}
+// 重复函数已删除 - 使用第一个版本
 
 // 颜色选择器功能
 function initColorPicker() {
@@ -4627,10 +4455,10 @@ async function performSpeedTest(card) {
         updateProgress(card, 0, 'Testing latency...', 'レイテンシをテスト中...');
         const latencyResult = await measureLatency();
         latency.textContent = `${latencyResult}ms`;
-        updateProgress(card, 20, 'Testing download speed...', 'ダウンロード速度をテスト中...');
+        updateProgress(card, 20, 'Testing download speed (Cloudflare)...', 'ダウンロード速度をテスト中（Cloudflare）...');
         
-        // 阶段2: 下载速度测试 (20-80%)
-        const downloadResult = await testDownloadSpeed();
+        // 阶段2: 下载速度测试 (20-80%) - 使用Cloudflare专业测试
+        const downloadResult = await window.performProfessionalSpeedTest();
         downloadSpeed.textContent = `${downloadResult.speed.toFixed(1)} MB/s`;
         updateProgress(card, 80, 'Testing upload speed...', 'アップロード速度をテスト中...');
         
