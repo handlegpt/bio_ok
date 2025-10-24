@@ -629,8 +629,7 @@ function initRealtimeInfo() {
     // 二维码生成器功能
     initQRGenerator();
     
-    // 添加调试功能
-    initDebugTools();
+    // 调试功能已移除
 }
 
 // 更新时钟（自动识别用户时区）
@@ -968,11 +967,11 @@ async function fetchWeatherByIP() {
             };
         }
     } catch (error) {
-        console.log('IP定位失败:', error);
+        // IP定位失败
     }
     
     // 如果所有方法都失败，使用默认的Tokyo
-    console.log('使用默认城市: Tokyo');
+    // 使用默认城市: Tokyo
     const weather = await fetchWeatherAPIByCity('Tokyo');
     return {
         weather: weather,
@@ -992,7 +991,7 @@ async function fetchWeatherByCoords(lat, lon) {
             };
         }
     } catch (error) {
-        console.log('坐标天气API失败:', error);
+        // 坐标天气API失败
     }
     return null;
 }
@@ -1125,12 +1124,12 @@ async function fetchWeather() {
             descElements.forEach(descElement => {
                 descElement.textContent = weatherData.desc;
             });
-            console.log('天气数据获取成功:', weatherData);
+            // 天气数据获取成功
         } else {
             throw new Error('所有天气API都不可用');
         }
     } catch (error) {
-        console.log('天气API不可用:', error);
+        // 天气API不可用
         tempElements.forEach(tempElement => {
             tempElement.textContent = '--°C';
         });
@@ -1323,7 +1322,7 @@ function initPasswordGenerator() {
     // 检查是否在分页系统中，如果是则跳过独立初始化
     const realtimeGrid = document.getElementById('realtime-grid');
     if (realtimeGrid && realtimeGrid.querySelector('.password-output')) {
-        console.log('Password generator is in pagination system, skipping independent initialization');
+        // Password generator is in pagination system
         return;
     }
     
@@ -1337,7 +1336,7 @@ function initPasswordGenerator() {
     
     // 检查元素是否存在
     if (!passwordOutput || !generateBtn || !copyBtn || !lengthSlider || !lengthValue || !strengthIndicator) {
-        console.log('Password generator elements not found, skipping initialization');
+        // Password generator elements not found
         return;
     }
     
@@ -1519,7 +1518,7 @@ function initMobileOptimizations() {
     // 检测网络状态
     function updateNetworkStatus() {
         if (navigator.onLine) {
-            console.log('网络已连接');
+            // 网络已连接
         } else {
             showUserNotification('warning', '网络连接已断开，部分功能可能不可用');
         }
@@ -1567,7 +1566,7 @@ window.performProfessionalSpeedTest = async function() {
             // 首先尝试使用Cloudflare Speed Test API
             const cloudflareResult = await testCloudflareSpeed();
             if (cloudflareResult.speed > 0) {
-                console.log(`Cloudflare Speed Test: ${cloudflareResult.speed.toFixed(2)} MB/s (${cloudflareResult.speedMbps.toFixed(1)} Mbps)`);
+                // Cloudflare Speed Test completed
                 return cloudflareResult;
             }
             
@@ -1605,7 +1604,7 @@ window.performProfessionalSpeedTest = async function() {
             let totalSpeed = 0;
             
             for (const server of testServers) {
-                console.log(`Testing ${server.name}...`);
+                // Testing server
                 
                 for (const url of server.urls) {
                     try {
@@ -1619,14 +1618,14 @@ window.performProfessionalSpeedTest = async function() {
                             totalSpeed += result.speed;
                         }
                     } catch (error) {
-                        console.log(`${server.name} test failed:`, error);
+                        // Server test failed
                     }
                 }
             }
             
             // 如果所有测试都失败，使用备用方法
             if (successfulTests === 0) {
-                console.log('All professional tests failed, using fallback...');
+                // All professional tests failed, using fallback
                 return await performFallbackSpeedTest();
             }
             
@@ -1635,8 +1634,7 @@ window.performProfessionalSpeedTest = async function() {
             const finalSpeed = Math.max(bestSpeed, avgSpeed); // 使用最佳速度和平均速度的较大值
             const finalSpeedMbps = finalSpeed * 8;
             
-            console.log(`Professional speed test completed: ${finalSpeed.toFixed(2)} MB/s (${finalSpeedMbps.toFixed(1)} Mbps)`);
-            console.log(`Best speed: ${bestSpeed.toFixed(2)} MB/s, Average speed: ${avgSpeed.toFixed(2)} MB/s`);
+            // Professional speed test completed
             
             return {
                 speed: finalSpeed,
@@ -1644,7 +1642,7 @@ window.performProfessionalSpeedTest = async function() {
             };
             
         } catch (error) {
-            console.log('Professional speed test failed:', error);
+            // Professional speed test failed
             return await performFallbackSpeedTest();
         }
     }
@@ -1708,7 +1706,7 @@ window.testDownloadSpeedWithParams = async function(url, serverName) {
                 const speed = (data.byteLength / duration) / (1024 * 1024); // MB/s
                 const speedMbps = speed * 8; // Mbps
                 
-                console.log(`${serverName}: ${data.byteLength} bytes in ${duration.toFixed(2)}s = ${speed.toFixed(2)} MB/s`);
+                // Speed test result
                 
                 return {
                     speed: speed,
@@ -1734,7 +1732,7 @@ async function startSpeedTest() {
     const result = document.querySelector('.speed-result');
     
     if (!button || !result) {
-        console.log('Speed test elements not found');
+        // Speed test elements not found
         return;
     }
     
@@ -1829,7 +1827,7 @@ async function measureLatency() {
                 cache: 'no-cache'
             });
         } catch (e) {
-            console.log('Latency test failed');
+            // Latency test failed
         }
     }
     const endTime = performance.now();
@@ -2552,11 +2550,11 @@ async function getIPLocation() {
     
     for (const api of apis) {
         try {
-            console.log('尝试IP定位API...');
+            // 尝试IP定位API
             const result = await api();
             
             if (result && result.city) {
-                console.log('IP定位成功:', result);
+                // IP定位成功
                 return {
                     city: result.city,
                     country: result.country || result.country_name || 'Unknown',
@@ -2564,12 +2562,12 @@ async function getIPLocation() {
                 };
             }
         } catch (error) {
-            console.log('IP定位API失败:', error);
+            // IP定位API失败
         }
     }
     
     // 所有API都失败，返回null
-    console.log('所有IP定位API都失败');
+    // 所有IP定位API都失败
     return null;
 }
 
@@ -2587,7 +2585,7 @@ function getCityFromLocalTime() {
         const hour = now.getHours();
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         
-        console.log('現地時間:', timeString, '时区:', timezone);
+        // 現地時間和时区
         
         // 基于时区的城市推断
         const timezoneCityMap = {
@@ -2611,57 +2609,12 @@ function getCityFromLocalTime() {
         return cityFromTz || 'Local';
         
     } catch (error) {
-        console.log('現地時間推断失败:', error);
+        // 現地時間推断失败
         return 'Local';
     }
 }
 
-// 调试工具
-function initDebugTools() {
-    // 添加全局调试函数
-    window.clearWeatherCache = function() {
-        localStorage.removeItem('weather_cache');
-        localStorage.removeItem('user_location');
-        console.log('天气缓存已清除');
-        location.reload();
-    };
-    
-    window.getWeatherCache = function() {
-        const weatherCache = localStorage.getItem('weather_cache');
-        const locationCache = localStorage.getItem('user_location');
-        console.log('天气缓存:', weatherCache ? JSON.parse(weatherCache) : null);
-        console.log('位置缓存:', locationCache ? JSON.parse(locationCache) : null);
-    };
-    
-    // 手动设置城市
-    window.setCity = function(cityName) {
-        const cityElements = document.querySelectorAll('.current-city');
-        const weatherCityElements = document.querySelectorAll('.weather-city');
-        
-        cityElements.forEach(cityElement => {
-            cityElement.textContent = cityName;
-        });
-        
-        weatherCityElements.forEach(weatherCityElement => {
-            weatherCityElement.textContent = cityName;
-        });
-        
-        // 保存到缓存
-        localStorage.setItem('user_location', JSON.stringify({
-            city: cityName,
-            country: 'Manual',
-            timestamp: Date.now()
-        }));
-        
-        console.log('城市已设置为:', cityName);
-    };
-    
-    // 在控制台显示调试信息
-    console.log('调试工具已加载:');
-    console.log('- clearWeatherCache() - 清除天气缓存');
-    console.log('- getWeatherCache() - 查看缓存内容');
-    console.log('- setCity("城市名") - 手动设置城市');
-}
+// 调试工具已移除
 
 // 邮箱二维码功能
 function initEmailQR() {
@@ -2838,7 +2791,7 @@ function initLogoClick() {
 function initAnalytics() {
     // 检查是否启用了Google Analytics
     if (typeof gtag === 'undefined') {
-        console.log('Google Analytics not loaded');
+        // Google Analytics not loaded
         return;
     }
     
@@ -3385,7 +3338,7 @@ function initHolidaysTool() {
             const holidays = await fetchHolidaysFromAPI(selectedCountry);
             displayHolidays(holidays);
         } catch (error) {
-            console.log('API failed, using local data:', error);
+            // API failed, using local data
             // 如果API失败，使用本地数据
             const holidays = holidaysData[selectedCountry] || [];
             displayHolidays(holidays);
@@ -3617,7 +3570,7 @@ async function fetchHolidaysFromAPI(countryCode) {
                 }));
             }
         } catch (error) {
-            console.log(`API ${apiUrl} failed:`, error);
+            // API failed
             continue;
         }
     }
@@ -3868,7 +3821,7 @@ function initRealtimePagination() {
     let currentPage = parseInt(localStorage.getItem('realtime-current-page')) || 1;
     const totalPages = Math.ceil(realtimeTools.length / toolsPerPage);
     
-    console.log('Tools Hub: 初始化分页，当前页面:', currentPage, '总页数:', totalPages);
+    // Tools Hub: 初始化分页
     
     // 初始化分页
     function initPagination() {
@@ -3911,7 +3864,7 @@ function initRealtimePagination() {
         
         // 防抖：如果正在渲染，跳过
         if (window.isRenderingTools) {
-            console.log('Tools Hub: 正在渲染中，跳过重复请求');
+            // Tools Hub: 正在渲染中，跳过重复请求
             return;
         }
         
@@ -3919,7 +3872,7 @@ function initRealtimePagination() {
         
         // 保存当前页面到localStorage
         localStorage.setItem('realtime-current-page', currentPage.toString());
-        console.log('Tools Hub: 保存页面状态到localStorage:', currentPage);
+        // Tools Hub: 保存页面状态到localStorage
         
         updatePaginationInfo();
         updatePaginationButtons();
@@ -3977,11 +3930,11 @@ function initRealtimePagination() {
                         if (now - data.timestamp < CACHE_DURATION) {
                             // 使用缓存数据
                             displayWeatherData(data.weather, data.city);
-                            console.log('Tools Hub: 使用缓存的天气数据', data);
+                            // Tools Hub: 使用缓存的天气数据
                             return;
                         }
                     } catch (error) {
-                        console.log('Tools Hub: 解析天气缓存失败', error);
+                        // Tools Hub: 解析天气缓存失败
                     }
                 }
                 
@@ -3990,10 +3943,10 @@ function initRealtimePagination() {
                     getUserLocationAndWeather().then(result => {
                         if (result && result.weather) {
                             displayWeatherData(result.weather, result.city);
-                            console.log('Tools Hub: 获取新天气数据', result);
+                            // Tools Hub: 获取新天气数据
                         }
                     }).catch(error => {
-                        console.log('Tools Hub: 获取天气失败', error);
+                        // Tools Hub: 获取天气失败
                     });
                 }
             }, 200);
@@ -4137,13 +4090,13 @@ function initRealtimePagination() {
     // 事件监听器
     prevBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('Tools Hub: 上一页按钮点击，当前页面:', currentPage);
+        // Tools Hub: 上一页按钮点击
         goToPage(currentPage - 1);
     });
     
     nextBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('Tools Hub: 下一页按钮点击，当前页面:', currentPage);
+        // Tools Hub: 下一页按钮点击
         goToPage(currentPage + 1);
     });
     
@@ -4401,7 +4354,7 @@ function initRealtimePagination() {
                 fetchHolidaysFromAPI(country).then(holidays => {
                     displayHolidays(holidays, output);
                 }).catch(error => {
-                    console.log('API failed, using local data:', error);
+                    // API failed, using local data
                     const holidays = holidaysData[country] || [];
                     displayHolidays(holidays, output);
                 });
@@ -4595,7 +4548,7 @@ async function measureLatency() {
             return Math.round(endTime - startTime);
         }
     } catch (error) {
-        console.log('Latency test failed, using fallback');
+        // Latency test failed, using fallback
     }
     
     // 降级方案
@@ -4630,7 +4583,7 @@ async function testDownloadSpeed() {
                 const sizeMB = data.size / (1024 * 1024); // MB
                 const speed = sizeMB / duration; // MB/s
                 
-                console.log(`Speed test: ${url} - Size: ${data.size} bytes, Duration: ${duration.toFixed(2)}s, Speed: ${speed.toFixed(2)} MB/s`);
+                // Speed test result
                 
                 if (speed > 0 && speed < 100) { // 过滤异常值
                     totalSpeed += speed;
@@ -4638,18 +4591,18 @@ async function testDownloadSpeed() {
                 }
             }
         } catch (error) {
-            console.log(`Download test failed for ${url}:`, error);
+            // Download test failed
         }
     }
     
     if (successfulTests > 0) {
         const avgSpeed = totalSpeed / successfulTests;
-        console.log(`Average download speed: ${avgSpeed.toFixed(2)} MB/s`);
+        // Average download speed calculated
         return { speed: avgSpeed };
     } else {
         // 使用更合理的降级数据
         const fallbackSpeed = Math.random() * 5 + 3; // 3-8 MB/s
-        console.log(`Using fallback speed: ${fallbackSpeed.toFixed(2)} MB/s`);
+        // Using fallback speed
         return { speed: fallbackSpeed };
     }
 }
