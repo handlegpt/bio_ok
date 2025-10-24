@@ -4218,12 +4218,30 @@ function initRealtimePagination() {
             const input = card.querySelector('.base64-input');
             const output = card.querySelector('.base64-output');
             
-            if (input && output && input.value.trim()) {
+            if (input && output) {
+                const text = input.value.trim();
+                if (!text) {
+                    output.innerHTML = `<div class="text-warning small">Please enter text to encode</div>`;
+                    return;
+                }
+                
                 try {
-                    const encoded = btoa(unescape(encodeURIComponent(input.value)));
-                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded text-dark">${encoded}</div>`;
+                    // 使用更安全的编码方法
+                    const encoded = btoa(unescape(encodeURIComponent(text)));
+                    output.innerHTML = `
+                        <div class="text-break small bg-light p-2 rounded text-dark">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <small class="text-muted">Base64 Encoded:</small>
+                                <button class="btn btn-sm btn-outline-primary copy-result-btn" title="Copy result">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-text">${encoded}</div>
+                        </div>
+                    `;
                 } catch (error) {
-                    output.innerHTML = `<div class="text-danger small">Encoding failed</div>`;
+                    console.error('Base64 encoding error:', error);
+                    output.innerHTML = `<div class="text-danger small">Encoding failed: ${error.message}</div>`;
                 }
             }
         }
@@ -4234,25 +4252,73 @@ function initRealtimePagination() {
             const input = card.querySelector('.base64-input');
             const output = card.querySelector('.base64-output');
             
-            if (input && output && input.value.trim()) {
+            if (input && output) {
+                const text = input.value.trim();
+                if (!text) {
+                    output.innerHTML = `<div class="text-warning small">Please enter Base64 text to decode</div>`;
+                    return;
+                }
+                
                 try {
-                    const decoded = decodeURIComponent(escape(atob(input.value)));
-                    output.innerHTML = `<div class="text-break small bg-light p-2 rounded text-dark">${decoded}</div>`;
+                    // 验证是否为有效的Base64
+                    const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+                    if (!base64Regex.test(text)) {
+                        output.innerHTML = `<div class="text-warning small">Invalid Base64 format</div>`;
+                        return;
+                    }
+                    
+                    const decoded = decodeURIComponent(escape(atob(text)));
+                    output.innerHTML = `
+                        <div class="text-break small bg-light p-2 rounded text-dark">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <small class="text-muted">Decoded Text:</small>
+                                <button class="btn btn-sm btn-outline-primary copy-result-btn" title="Copy result">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="result-text">${decoded}</div>
+                        </div>
+                    `;
                 } catch (error) {
-                    output.innerHTML = `<div class="text-danger small">Decoding failed</div>`;
+                    console.error('Base64 decoding error:', error);
+                    output.innerHTML = `<div class="text-danger small">Decoding failed: ${error.message}</div>`;
                 }
             }
         }
         
         // 复制Base64结果按钮
-        if (e.target.closest('.copy-base64-btn')) {
+        if (e.target.closest('.copy-base64-btn') || e.target.closest('.copy-result-btn')) {
             const card = e.target.closest('.realtime-card');
             const output = card.querySelector('.base64-output');
-            const result = output.querySelector('div');
             
-            if (result && !result.classList.contains('text-muted')) {
-                navigator.clipboard.writeText(result.textContent).then(() => {
+            // 尝试获取结果文本
+            let resultText = '';
+            const resultElement = output.querySelector('.result-text');
+            if (resultElement) {
+                resultText = resultElement.textContent;
+            } else {
+                const result = output.querySelector('div');
+                if (result && !result.classList.contains('text-muted')) {
+                    resultText = result.textContent;
+                }
+            }
+            
+            if (resultText) {
+                navigator.clipboard.writeText(resultText).then(() => {
                     showUserNotification('success', 'Copied to clipboard!');
+                    // 如果是新的复制按钮，显示视觉反馈
+                    const btn = e.target.closest('button');
+                    if (btn && btn.classList.contains('copy-result-btn')) {
+                        const originalHTML = btn.innerHTML;
+                        btn.innerHTML = '<i class="fas fa-check"></i>';
+                        btn.classList.remove('btn-outline-primary');
+                        btn.classList.add('btn-success');
+                        setTimeout(() => {
+                            btn.innerHTML = originalHTML;
+                            btn.classList.remove('btn-success');
+                            btn.classList.add('btn-outline-primary');
+                        }, 1000);
+                    }
                 }).catch(() => {
                     showUserNotification('error', 'Failed to copy');
                 });
