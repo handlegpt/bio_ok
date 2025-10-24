@@ -110,16 +110,6 @@
     }
 }
 
-/* 暗黑模式下的头像样式 */
-[data-theme="dark"] .avatar-profile {
-    border-color: #343a40;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] .avatar-profile:hover {
-    border-color: #6ea8fe;
-    box-shadow: 0 10px 25px rgba(110, 168, 254, 0.2);
-}
 
 /* 技能标签样式 */
 .skill-tag {
@@ -298,19 +288,6 @@
     opacity: 1;
 }
 
-/* 暗黑模式下的分享卡片 */
-[data-theme="dark"] .share-card {
-    background-color: #343a40;
-    color: #fff;
-}
-
-[data-theme="dark"] .share-card .card-title {
-    color: #fff;
-}
-
-[data-theme="dark"] .share-card .card-text {
-    color: #adb5bd;
-}
 
 .interest-tag:hover {
     transform: translateY(-2px);
@@ -326,52 +303,7 @@
 .interest-tag:nth-child(5) { animation-delay: 1.1s; }
 .interest-tag:nth-child(6) { animation-delay: 1.2s; }
 
-/* 暗黑模式下的标签样式 */
-[data-theme="dark"] .skill-tag {
-    background-color: rgba(13, 110, 253, 0.2) !important;
-    border-color: rgba(13, 110, 253, 0.3);
-    color: #6ea8fe !important;
-}
 
-[data-theme="dark"] .skill-tag:hover {
-    background-color: rgba(13, 110, 253, 0.3) !important;
-}
-
-[data-theme="dark"] .interest-tag {
-    background-color: rgba(108, 117, 125, 0.2) !important;
-    border-color: rgba(108, 117, 125, 0.3);
-    color: #adb5bd !important;
-}
-
-[data-theme="dark"] .interest-tag:hover {
-    background-color: rgba(108, 117, 125, 0.3) !important;
-    color: #dee2e6 !important;
-}
-
-/* 暗色主题下的Logo样式 */
-[data-theme="dark"] .logo-main {
-    color: #4dabf7;
-}
-
-[data-theme="dark"] .logo-container:hover .logo-main {
-    color: #339af0;
-}
-
-[data-theme="dark"] .logo-subtitle {
-    color: #868e96;
-}
-
-[data-theme="dark"] .logo-container:hover .logo-subtitle {
-    color: #adb5bd;
-}
-
-[data-theme="dark"] .logo-container::before {
-    background: linear-gradient(135deg, #4dabf7, #339af0);
-}
-
-[data-theme="dark"] .logo-main::after {
-    background: linear-gradient(90deg, #4dabf7, #339af0);
-}
 
 /* 响应式设计 */
 @media (max-width: 768px) {
@@ -1424,106 +1356,8 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* 暗色主题 */
-[data-theme="dark"] {
-    --bs-body-bg: #1a1a1a;
-    --bs-body-color: #e9ecef;
-    --bs-primary: #0d6efd;
-    --bs-secondary: #6c757d;
-    --bs-success: #198754;
-    --bs-info: #0dcaf0;
-    --bs-warning: #ffc107;
-    --bs-danger: #dc3545;
-    --bs-light: #f8f9fa;
-    --bs-dark: #212529;
-}
 
-[data-theme="dark"] body {
-    background-color: var(--bs-body-bg) !important;
-    color: var(--bs-body-color) !important;
-}
 
-[data-theme="dark"] .bg-white {
-    background-color: #2d2d2d !important;
-    color: #e9ecef !important;
-}
-
-[data-theme="dark"] .card {
-    background-color: #2d2d2d !important;
-    border-color: #404040 !important;
-    color: #e9ecef !important;
-}
-
-[data-theme="dark"] .text-muted {
-    color: #adb5bd !important;
-}
-
-[data-theme="dark"] .btn-outline-primary {
-    border-color: #0d6efd;
-    color: #0d6efd;
-}
-
-[data-theme="dark"] .btn-outline-primary:hover {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    color: white;
-}
-
-[data-theme="dark"] .btn-outline-secondary {
-    border-color: #6c757d;
-    color: #6c757d;
-}
-
-[data-theme="dark"] .btn-outline-secondary:hover {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: white;
-}
-
-[data-theme="dark"] .form-control {
-    background-color: #404040 !important;
-    border-color: #6c757d !important;
-    color: #e9ecef !important;
-}
-
-[data-theme="dark"] .form-control:focus {
-    background-color: #404040 !important;
-    border-color: #0d6efd !important;
-    color: #e9ecef !important;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
-}
-
-[data-theme="dark"] .list-group-item {
-    background-color: #2d2d2d !important;
-    border-color: #404040 !important;
-    color: #e9ecef !important;
-}
-
-[data-theme="dark"] .shadow-sm {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5) !important;
-}
-
-/* 主题切换动画 */
-.theme-transition {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-/* 主题切换按钮样式 */
-#theme-toggle {
-    transition: all 0.3s ease;
-}
-
-#theme-toggle:hover {
-    transform: scale(1.1);
-}
-
-#theme-icon {
-    transition: transform 0.3s ease;
-}
-
-[data-theme="dark"] #theme-icon {
-    transform: rotate(180deg);
-}
 
 /* 网络速度测试样式 */
 #start-speed-test {

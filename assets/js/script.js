@@ -15,10 +15,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 实时信息功能
     initRealtimeInfo();
+    
+    // 清理主题相关的本地存储
+    localStorage.removeItem('preferred-theme');
+    
     // 语言切换功能
     
-    // 主题切换功能
-    initThemeToggle();
     
     // 语言选择器事件
     document.querySelectorAll('.dropdown-item[data-lang]').forEach(item => {
@@ -2265,53 +2267,6 @@ function showUserNotification(type, message, duration = 5000) {
     }, duration);
 }
 
-// 主题切换功能
-function initThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const body = document.body;
-    
-    // 从本地存储获取主题偏好
-    const savedTheme = localStorage.getItem('preferred-theme');
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const currentTheme = savedTheme || systemTheme;
-    
-    // 应用主题
-    applyTheme(currentTheme);
-    
-    // 主题切换按钮事件
-    themeToggle.addEventListener('click', function() {
-        const currentTheme = body.getAttribute('data-theme') || 'light';
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        applyTheme(newTheme);
-        localStorage.setItem('preferred-theme', newTheme);
-    });
-    
-    // 监听系统主题变化
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-        if (!localStorage.getItem('preferred-theme')) {
-            applyTheme(e.matches ? 'dark' : 'light');
-        }
-    });
-    
-    function applyTheme(theme) {
-        body.setAttribute('data-theme', theme);
-        
-        if (theme === 'dark') {
-            themeIcon.className = 'fas fa-sun';
-            themeToggle.title = '切换到浅色主题';
-        } else {
-            themeIcon.className = 'fas fa-moon';
-            themeToggle.title = '切换到深色主题';
-        }
-        
-        // 添加过渡动画
-        body.classList.add('theme-transition');
-        setTimeout(() => {
-            body.classList.remove('theme-transition');
-        }, 300);
-    }
-}
 
 // 计算密码强度
 function calculatePasswordStrength(password) {
@@ -2836,8 +2791,6 @@ function initAnalytics() {
     // 追踪语言切换
     trackLanguageSwitch();
     
-    // 追踪主题切换
-    trackThemeSwitch();
     
     // 追踪滚动深度
     trackScrollDepth();
@@ -2951,19 +2904,6 @@ function trackLanguageSwitch() {
     }
 }
 
-// 追踪主题切换
-function trackThemeSwitch() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            gtag('event', 'event', 'theme_switch', {
-                theme: newTheme
-            });
-        });
-    }
-}
 
 // 追踪滚动深度
 function trackScrollDepth() {
