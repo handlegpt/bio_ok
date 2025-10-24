@@ -2359,6 +2359,12 @@ function initQRGenerator() {
             return;
         }
         
+        // 验证输入长度
+        if (text.length > 2000) {
+            showUserNotification('warning', getCurrentLanguage() === 'jp' ? 'テキストが長すぎます（最大2000文字）' : 'Text too long (max 2000 characters)');
+            return;
+        }
+        
         generateQRCode(text);
     });
     
@@ -2369,23 +2375,50 @@ function initQRGenerator() {
         }
     });
     
+    // 实时输入验证
+    qrInput.addEventListener('input', function() {
+        const text = qrInput.value.trim();
+        const length = text.length;
+        
+        // 显示字符计数
+        let counter = qrInput.parentNode.querySelector('.char-counter');
+        if (!counter) {
+            counter = document.createElement('small');
+            counter.className = 'char-counter text-muted';
+            qrInput.parentNode.appendChild(counter);
+        }
+        
+        if (length > 0) {
+            counter.textContent = `${length}/2000`;
+            counter.className = length > 2000 ? 'char-counter text-danger' : 'char-counter text-muted';
+        } else {
+            counter.textContent = '';
+        }
+    });
+    
     // 下载二维码
     downloadBtn.addEventListener('click', function() {
-        console.log('Download button clicked');
         const img = qrOutput.querySelector('img');
-        console.log('Found img element:', img);
+        const qrInput = document.getElementById('qr-input');
         
         if (img && img.src) {
-            console.log('Image src:', img.src);
+            // 生成更好的文件名
+            const inputText = qrInput ? qrInput.value.trim() : 'qrcode';
+            const timestamp = new Date().toISOString().slice(0, 10);
+            const filename = `qrcode_${inputText.substring(0, 20).replace(/[^a-zA-Z0-9]/g, '_')}_${timestamp}.png`;
             
             // 使用fetch获取图片并转换为blob下载
             fetch(img.src)
-                .then(response => response.blob())
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.blob();
+                })
                 .then(blob => {
                     const url = window.URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.href = url;
-                    link.download = 'qrcode.png';
+                    link.download = filename;
+                    link.style.display = 'none';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -2401,7 +2434,6 @@ function initQRGenerator() {
                     
                     // 降级方案：在新窗口打开
                     try {
-                        console.log('Opening in new tab:', img.src);
                         window.open(img.src, '_blank');
                         const currentLang = getCurrentLanguage();
                         const message = currentLang === 'jp' ? '新しいタブでQRコードを開きました。右クリックで保存してください。' : 'QR Code opened in new tab. Right-click to save.';
@@ -2414,7 +2446,6 @@ function initQRGenerator() {
                     }
                 });
         } else {
-            console.log('No img element found');
             const currentLang = getCurrentLanguage();
             const message = currentLang === 'jp' ? 'QRコードが見つかりません' : 'QR Code not found';
             showUserNotification('error', message);
@@ -2431,11 +2462,18 @@ function generateQRCode(text, outputElement = null, downloadButtonElement = null
     qrOutput.innerHTML = '';
     
     // 显示加载状态
-    qrOutput.innerHTML = '<div class="text-muted small"><i class="fas fa-spinner fa-spin me-1"></i>Generating...</div>';
+    const currentLang = getCurrentLanguage();
+    const loadingText = currentLang === 'jp' ? '生成中...' : 'Generating...';
+    qrOutput.innerHTML = `<div class="text-muted small"><i class="fas fa-spinner fa-spin me-1"></i>${loadingText}</div>`;
     
     try {
-        // 使用在线QR API生成二维码
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
+        // 检测输入类型并提供更好的参数
+        const isUrl = /^https?:\/\//.test(text);
+        const qrSize = isUrl ? '300x300' : '250x250'; // URL使用更大尺寸
+        const errorCorrection = 'M'; // 中等错误纠正级别
+        
+        // 使用在线QR API生成二维码，添加更多参数
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}&data=${encodeURIComponent(text)}&ecc=${errorCorrection}&format=png&margin=10`;
         
         // 创建图片元素
         const img = document.createElement('img');
@@ -2444,35 +2482,60 @@ function generateQRCode(text, outputElement = null, downloadButtonElement = null
         img.style.maxWidth = '100%';
         img.style.height = 'auto';
         img.style.borderRadius = '8px';
+        img.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
         img.crossOrigin = 'anonymous'; // 允许跨域
+        
+        // 添加加载超时处理
+        const timeout = setTimeout(() => {
+            if (qrOutput.querySelector('.fa-spinner')) {
+                qrOutput.innerHTML = '<div class="text-warning small"><i class="fas fa-clock me-1"></i>Taking longer than expected...</div>';
+            }
+        }, 5000);
         
         // 图片加载成功
         img.onload = function() {
+            clearTimeout(timeout);
             qrOutput.innerHTML = '';
-            qrOutput.appendChild(img);
+            
+            // 创建容器包装图片
+            const container = document.createElement('div');
+            container.className = 'qr-container text-center';
+            container.appendChild(img);
+            
+            // 添加QR码信息
+            const info = document.createElement('div');
+            info.className = 'mt-2 small text-muted';
+            info.innerHTML = `
+                <div><strong>${isUrl ? 'URL' : 'Text'}:</strong> ${text.length > 50 ? text.substring(0, 50) + '...' : text}</div>
+                <div><strong>Size:</strong> ${qrSize}</div>
+            `;
+            container.appendChild(info);
+            
+            qrOutput.appendChild(container);
             downloadBtn.style.display = 'inline-block';
             
             // 显示成功通知
-            const currentLang = getCurrentLanguage();
             const message = currentLang === 'jp' ? 'QRコードが生成されました' : 'QR Code generated successfully';
             showUserNotification('success', message);
         };
         
         // 图片加载失败
         img.onerror = function() {
-            qrOutput.innerHTML = '<div class="text-danger small"><i class="fas fa-exclamation-triangle me-1"></i>Failed to generate QR code</div>';
+            clearTimeout(timeout);
+            const errorText = currentLang === 'jp' ? 'QRコードの生成に失敗しました' : 'Failed to generate QR code';
+            qrOutput.innerHTML = `<div class="text-danger small"><i class="fas fa-exclamation-triangle me-1"></i>${errorText}</div>`;
             downloadBtn.style.display = 'none';
             
             // 显示错误通知
-            const currentLang = getCurrentLanguage();
-            const message = currentLang === 'jp' ? 'QRコードの生成に失敗しました' : 'Failed to generate QR code';
-            showUserNotification('error', message);
+            showUserNotification('error', errorText);
         };
         
     } catch (error) {
         console.error('QR Code generation error:', error);
-        qrOutput.innerHTML = '<div class="text-danger small"><i class="fas fa-exclamation-triangle me-1"></i>Error generating QR code</div>';
+        const errorText = currentLang === 'jp' ? 'QRコード生成エラー' : 'Error generating QR code';
+        qrOutput.innerHTML = `<div class="text-danger small"><i class="fas fa-exclamation-triangle me-1"></i>${errorText}</div>`;
         downloadBtn.style.display = 'none';
+        showUserNotification('error', errorText);
     }
 }
 
@@ -3753,17 +3816,21 @@ function initRealtimePagination() {
             textClass: 'text-white',
             content: `
                 <div class="mb-3">
-                    <input type="text" class="qr-input form-control form-control-sm" placeholder="Enter text or URL" 
-                           style="font-size: 12px; padding: 4px 8px;">
+                    <input type="text" id="qr-input" class="qr-input form-control form-control-sm" 
+                           placeholder="Enter text or URL" style="font-size: 12px; padding: 4px 8px;">
+                    <div class="form-text small text-light">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <span data-en="Supports text, URLs, and up to 2000 characters" data-jp="テキスト、URL、最大2000文字まで対応">Supports text, URLs, and up to 2000 characters</span>
+                    </div>
                 </div>
-                <div class="qr-output mb-2" style="min-height: 80px; display: flex; align-items: center; justify-content: center;">
+                <div id="qr-output" class="qr-output mb-2" style="min-height: 120px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 8px;">
                     <div class="text-muted small" data-en="QR Code will appear here" data-jp="QRコードがここに表示されます">QR Code will appear here</div>
                 </div>
                 <div class="d-flex gap-2 justify-content-center">
-                    <button class="btn btn-sm btn-outline-light generate-qr-btn">
+                    <button id="generate-qr-btn" class="btn btn-sm btn-outline-light generate-qr-btn">
                         <i class="fas fa-qrcode me-1"></i><span data-en="Generate" data-jp="生成">Generate</span>
                     </button>
-                    <button class="btn btn-sm btn-outline-light download-qr-btn" style="display: none;">
+                    <button id="download-qr-btn" class="btn btn-sm btn-outline-light download-qr-btn" style="display: none;">
                         <i class="fas fa-download me-1"></i><span data-en="Download" data-jp="ダウンロード">Download</span>
                     </button>
                 </div>
