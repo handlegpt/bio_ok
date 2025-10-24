@@ -23,16 +23,7 @@ header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
 header('Referrer-Policy: strict-origin-when-cross-origin');
-header('Content-Security-Policy: ' .
-    'default-src \'self\'; ' .
-    'script-src \'self\' \'unsafe-inline\' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com; ' .
-    'style-src \'self\' \'unsafe-inline\' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; ' .
-    'img-src \'self\' data: https://api.qrserver.com https://img.youtube.com; ' .
-    'font-src \'self\' https://cdnjs.cloudflare.com; ' .
-    'connect-src \'self\' https://api.weatherapi.com https://wttr.in https://ipapi.co https://ipinfo.io http://ip-api.com https://api.bigdatacloud.net https://api.openweathermap.org https://httpbin.org https://api.github.com https://jsonplaceholder.typicode.com https://www.random.org https://api.qrserver.com https://cdn.jsdelivr.net https://date.nager.at https://holidays.abstractapi.com https://api.calendario.com.br https://www.google-analytics.com https://analytics.google.com https://speed.cloudflare.com; ' .
-    'frame-src \'self\' https://www.youtube.com https://www.youtube-nocookie.com; ' .
-    'frame-ancestors \'none\';'
-);
+header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'unsafe-inline\' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com; style-src \'self\' \'unsafe-inline\' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src \'self\' data: https://api.qrserver.com https://img.youtube.com; font-src \'self\' https://cdnjs.cloudflare.com; connect-src \'self\' https://api.weatherapi.com https://wttr.in https://ipapi.co https://ipinfo.io http://ip-api.com https://api.bigdatacloud.net https://api.openweathermap.org https://httpbin.org https://api.github.com https://jsonplaceholder.typicode.com https://www.random.org https://api.qrserver.com https://cdn.jsdelivr.net https://date.nager.at https://holidays.abstractapi.com https://api.calendario.com.br https://www.google-analytics.com https://analytics.google.com https://speed.cloudflare.com; frame-src \'self\' https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors \'none\';');
 ?>
 <!DOCTYPE html>
 <html lang="en">
