@@ -11,6 +11,38 @@ body {
 /* 页面容器优化 */
 .container {
     max-width: 1200px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+/* 主要区域间距优化 */
+main {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+/* 区域间距优化 */
+section {
+    margin-bottom: 4rem;
+}
+
+/* 卡片间距优化 */
+.row.g-3 > * {
+    padding: 12px;
+}
+
+.row.g-4 > * {
+    padding: 16px;
+}
+
+/* 导航栏优化 */
+header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 /* 现代化标题样式 */
@@ -34,6 +66,33 @@ p {
 
 .text-muted {
     color: #8e8e93 !important;
+}
+
+/* 改进的颜色系统 */
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-muted: #8e8e93;
+    --background-primary: #ffffff;
+    --background-secondary: #fafafa;
+    --border-color: #e9ecef;
+    --shadow-light: rgba(0, 0, 0, 0.04);
+    --shadow-medium: rgba(0, 0, 0, 0.08);
+    --shadow-heavy: rgba(0, 0, 0, 0.12);
+}
+
+/* 改进的链接样式 */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-hover);
+    text-decoration: none;
 }
 
 /* 现代化卡片设计 */
@@ -68,16 +127,44 @@ p {
 /* 工具卡片样式 */
 .realtime-card {
     border: none;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     background: #ffffff;
     overflow: hidden;
+    position: relative;
+    min-height: 200px;
 }
 
 .realtime-card:hover {
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+/* 工具卡片内容优化 */
+.realtime-card .card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* 工具卡片图标优化 */
+.realtime-card .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.realtime-card:hover .card-icon {
+    transform: scale(1.1);
 }
 
 /* Logo和副标题样式 - 改进版 */
@@ -1442,6 +1529,26 @@ h1, h2, h3, h4, h5, h6 {
 
 
 
+/* 现代化表单元素 */
+.form-control {
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: var(--background-primary);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
 /* 现代化按钮样式 */
 .btn {
     border-radius: 12px;
@@ -1449,6 +1556,7 @@ h1, h2, h3, h4, h5, h6 {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
     padding: 12px 24px;
+    font-size: 16px;
 }
 
 .btn-primary {
@@ -1486,6 +1594,53 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #dee2e6;
     color: #495057;
     transform: translateY(-1px);
+}
+
+/* 微妙的动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 页面加载动画 */
+.fade-in-up {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.6s ease forwards;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.6s ease forwards;
 }
 
 /* 网络速度测试样式 */
