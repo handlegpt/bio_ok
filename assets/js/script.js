@@ -4519,8 +4519,7 @@ async function measureLatency() {
     
     try {
         const response = await fetch('https://httpbin.org/get', {
-            method: 'GET',
-            mode: 'cors',
+            method: 'HEAD',
             cache: 'no-cache'
         });
         
