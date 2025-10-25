@@ -147,33 +147,7 @@ $tools = [
     ],
 ];
 
-// 分享图片（双语）
-$shares = [
-    [
-        'image' => 'assets/images/sushi.jpeg',
-        'title_en' => 'kurasushi in Tokyo',
-        'title_jp' => '東京のくら寿司',
-        'description_en' => 'Enjoying delicious sushi at Kura Sushi in Tokyo. The conveyor belt sushi experience is always fun and the quality is amazing!',
-        'description_jp' => '東京のくら寿司で美味しい寿司を楽しんでいます。回転寿司の体験はいつも楽しく、品質も素晴らしいです！',
-        'date' => '2025-05'
-    ],
-    [
-        'image' => 'assets/images/hongkongsea.jpeg', 
-        'title_en' => 'travel in hongkong',
-        'title_jp' => '香港旅行',
-        'description_en' => 'Beautiful view of Hong Kong\'s coastline. The city skyline against the sea is absolutely breathtaking and the food scene is incredible!',
-        'description_jp' => '香港の海岸線の美しい景色。海に映える都市のスカイラインは絶景で、食べ物のシーンも素晴らしいです！',
-        'date' => '2024-07'
-    ],
-    [
-        'image' => 'assets/images/tokyomarry.jpeg',
-        'title_en' => 'Wedding ceremony at Tokyo Aquarium',
-        'title_jp' => '東京水族館での結婚式',
-        'description_en' => 'Visiting Tokyo Aquarium and witnessed a beautiful wedding ceremony! The couple chose such a unique and romantic venue surrounded by marine life. It was truly magical!',
-        'description_jp' => '東京水族館を訪れた時、美しい結婚式を目撃しました！カップルは海洋生物に囲まれたこんなにユニークでロマンチックな会場を選んだのです。本当に魔法のような光景でした！',
-        'date' => '2025-06'
-    ]
-];
+// 分享图片模块已移除
 
 // 样式配置
 $style_config = [
@@ -227,10 +201,7 @@ function get_tools() {
     return $tools;
 }
 
-function get_shares() {
-    global $shares;
-    return $shares;
-}
+// get_shares函数已移除
 
 function get_style_config() {
     global $style_config;

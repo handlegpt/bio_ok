@@ -11,7 +11,7 @@ function assets($path) {
 $config = get_config();
 $projects = get_projects();
 $tools = get_tools();
-$shares = get_shares();
+// $shares = get_shares(); // 已移除Recent Shares模块
 $bio = [
     'en' => get_bio('en'),
     'jp' => get_bio('jp')
@@ -131,7 +131,7 @@ header('Content-Security-Policy: ' .
                     <nav class="d-none d-md-flex gap-3">
                         <a href="#projects" class="text-decoration-none text-muted" data-en="Projects" data-jp="プロジェクト">Projects</a>
                         <a href="#tools" class="text-decoration-none text-muted" data-en="Tools" data-jp="ツール">Tools</a>
-                        <a href="#shares" class="text-decoration-none text-muted" data-en="Shares" data-jp="シェア">Shares</a>
+                        <!-- <a href="#shares" class="text-decoration-none text-muted" data-en="Shares" data-jp="シェア">Shares</a> --> <!-- 已移除Recent Shares模块 -->
                     </nav>
                 </div>
             </div>
@@ -306,45 +306,7 @@ header('Content-Security-Policy: ' .
                 </div>
             </div>
 
-            <!-- Share Images -->
-            <div id="shares" class="mb-5">
-                <h2 class="h5 fw-bold mb-3" data-en="Recent Shares" data-jp="最近のシェア">Recent Shares / 最近のシェア</h2>
-                <?php if (empty($shares)): ?>
-                    <div class="text-center text-muted py-4">
-                        <i class="fas fa-images fa-2x mb-3 opacity-50"></i>
-                        <p class="mb-0" data-en="No shares yet. Stay tuned!" data-jp="まだシェアはありません。お楽しみに！">No shares yet. Stay tuned!</p>
-                    </div>
-                <?php else: ?>
-                    <div class="row g-4">
-                        <?php foreach($shares as $share): ?>
-                            <div class="col-12 col-md-6">
-                                <div class="card share-card h-100">
-                                    <div class="share-image-container">
-                                        <img src="<?php echo htmlspecialchars($share['image'], ENT_QUOTES, 'UTF-8') ?>" 
-                                             alt="<?php echo htmlspecialchars($share['title_en'], ENT_QUOTES, 'UTF-8') ?>" 
-                                             class="share-image"
-                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
-                                        <div class="share-overlay">
-                                            <i class="fas fa-expand-alt"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <span class="share-title-en"><?php echo htmlspecialchars($share['title_en'], ENT_QUOTES, 'UTF-8') ?></span>
-                                            <span class="share-title-jp" style="display: none;"><?php echo htmlspecialchars($share['title_jp'], ENT_QUOTES, 'UTF-8') ?></span>
-                                        </h5>
-                                        <p class="card-text">
-                                            <span class="share-desc-en"><?php echo htmlspecialchars($share['description_en'], ENT_QUOTES, 'UTF-8') ?></span>
-                                            <span class="share-desc-jp" style="display: none;"><?php echo htmlspecialchars($share['description_jp'], ENT_QUOTES, 'UTF-8') ?></span>
-                                        </p>
-                                        <small class="text-muted"><?php echo htmlspecialchars($share['date'], ENT_QUOTES, 'UTF-8') ?></small>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+            <!-- Recent Shares模块已移除 -->
         </section>
     </main>
 
