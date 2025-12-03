@@ -7,7 +7,7 @@
     <meta name="description" content="Personal tools hub with password generator, QR code generator, 2FA generator, speed test, color picker, base64 encoder, weather &amp; time tools. Independent project showcase." data-en="Personal tools hub with password generator, QR code generator, 2FA generator, speed test, color picker, base64 encoder, weather &amp; time tools. Independent project showcase." data-jp="パスワード生成器、QRコード生成器、2FA生成器、速度テスト、カラーピッカー、Base64エンコーダー、天気・時間ツールを備えた個人ツール集。独立したプロジェクト展示。">
     
     <!-- SEO优化 -->
-    <meta name="keywords" content="personal website, tools hub, AI tools, password generator, QR code, weather, time, web development, programming">
+    <meta name="keywords" content="personal website, tools hub, password generator, QR code generator, 2FA generator, speed test, color picker, base64 encoder, weather, time, web development, programming, AI tools, productivity tools">
     <meta name="author" content="OK.link">
     <meta name="robots" content="index, follow">
     <meta name="language" content="en, ja">
@@ -46,6 +46,19 @@
         "description": "Personal tools hub with password generator, QR code generator, 2FA generator, speed test, color picker, base64 encoder, weather &amp; time tools. Independent project showcase.",
         "sameAs": [
             "https://ok.link"
+        ],
+        "knowsAbout": [
+            "Web Development",
+            "Programming",
+            "AI Tools",
+            "Password Security",
+            "QR Code Generation",
+            "2FA Authentication",
+            "Speed Testing",
+            "Color Design",
+            "Base64 Encoding",
+            "Weather Data",
+            "Time Management"
         ]
     }
     </script>
@@ -93,7 +106,7 @@
                     <nav class="d-none d-md-flex gap-3">
                         <a href="#projects" class="text-decoration-none text-muted" data-en="Projects" data-jp="プロジェクト">Projects</a>
                         <a href="#tools" class="text-decoration-none text-muted" data-en="Tools" data-jp="ツール">Tools</a>
-                        <!-- <a href="#shares" class="text-decoration-none text-muted" data-en="Shares" data-jp="シェア">Shares</a> --> <!-- 已移除Recent Shares模块 -->
+                        <a href="#shares" class="text-decoration-none text-muted" data-en="Shares" data-jp="シェア">Shares</a>
                     </nav>
                 </div>
             </div>
@@ -362,7 +375,84 @@
                 </div>
             </div>
 
-            <!-- Recent Shares模块已移除 -->
+            <!-- Share Images -->
+            <div id="shares" class="mb-5">
+                <h2 class="h5 fw-bold mb-3" data-en="Recent Shares" data-jp="最近のシェア">Recent Shares / 最近のシェア</h2>
+                                    <div class="row g-4">
+                                                    <div class="col-12 col-md-6">
+                                <div class="card share-card h-100">
+                                    <div class="share-image-container">
+                                        <img src="assets/images/sushi.jpeg" 
+                                             alt="kurasushi in Tokyo" 
+                                             class="share-image"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
+                                        <div class="share-overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span class="share-title-en">kurasushi in Tokyo</span>
+                                            <span class="share-title-jp" style="display: none;">東京のくら寿司</span>
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="share-desc-en">Enjoying delicious sushi at Kura Sushi in Tokyo. The conveyor belt sushi experience is always fun and the quality is amazing!</span>
+                                            <span class="share-desc-jp" style="display: none;">東京のくら寿司で美味しい寿司を楽しんでいます。回転寿司の体験はいつも楽しく、品質も素晴らしいです！</span>
+                                        </p>
+                                        <small class="text-muted">2025-05</small>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <div class="col-12 col-md-6">
+                                <div class="card share-card h-100">
+                                    <div class="share-image-container">
+                                        <img src="assets/images/hongkongsea.jpeg" 
+                                             alt="travel in hongkong" 
+                                             class="share-image"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
+                                        <div class="share-overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span class="share-title-en">travel in hongkong</span>
+                                            <span class="share-title-jp" style="display: none;">香港旅行</span>
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="share-desc-en">Beautiful view of Hong Kong&#039;s coastline. The city skyline against the sea is absolutely breathtaking and the food scene is incredible!</span>
+                                            <span class="share-desc-jp" style="display: none;">香港の海岸線の美しい景色。海に映える都市のスカイラインは絶景で、食べ物のシーンも素晴らしいです！</span>
+                                        </p>
+                                        <small class="text-muted">2024-07</small>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <div class="col-12 col-md-6">
+                                <div class="card share-card h-100">
+                                    <div class="share-image-container">
+                                        <img src="assets/images/tokyomarry.jpeg" 
+                                             alt="Wedding ceremony at Tokyo Aquarium" 
+                                             class="share-image"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjhmOWZhIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM2Yzc1N2QiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIG5vdCBmb3VuZDwvdGV4dD4KPC9zdmc+'">
+                                        <div class="share-overlay">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span class="share-title-en">Wedding ceremony at Tokyo Aquarium</span>
+                                            <span class="share-title-jp" style="display: none;">東京水族館での結婚式</span>
+                                        </h5>
+                                        <p class="card-text">
+                                            <span class="share-desc-en">Visiting Tokyo Aquarium and witnessed a beautiful wedding ceremony! The couple chose such a unique and romantic venue surrounded by marine life. It was truly magical!</span>
+                                            <span class="share-desc-jp" style="display: none;">東京水族館を訪れた時、美しい結婚式を目撃しました！カップルは海洋生物に囲まれたこんなにユニークでロマンチックな会場を選んだのです。本当に魔法のような光景でした！</span>
+                                        </p>
+                                        <small class="text-muted">2025-06</small>
+                                    </div>
+                                </div>
+                            </div>
+                                            </div>
+                            </div>
         </section>
     </main>
 
@@ -408,7 +498,7 @@
     </div>
 
     <!-- 隐藏的邮箱地址数据 -->
-    <div id="email-data" data-email="hello@ok.link" style="display: none;"></div>
+        <div id="email-data" data-email="hello@ok.link" style="display: none;"></div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

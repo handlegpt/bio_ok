@@ -398,7 +398,11 @@ header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'uns
     </div>
 
     <!-- 隐藏的邮箱地址数据 -->
-    <div id="email-data" data-email="<?php echo htmlspecialchars($config['email'], ENT_QUOTES, 'UTF-8'); ?>" style="display: none;"></div>
+    <?php 
+    // 使用安全的邮箱验证函数
+    $safe_email = get_safe_email();
+    ?>
+    <div id="email-data" data-email="<?php echo htmlspecialchars($safe_email, ENT_QUOTES, 'UTF-8'); ?>" style="display: none;"></div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

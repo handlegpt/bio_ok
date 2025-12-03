@@ -252,4 +252,72 @@ function should_show_disclaimer() {
     // 总是显示免责声明
     return true;
 }
+
+/**
+ * 验证和清理邮箱地址
+ * 防止恶意邮箱注入，确保只允许标准邮箱格式
+ * 
+ * @param string $email 原始邮箱地址
+ * @return string|false 验证通过的邮箱地址，失败返回false
+ */
+function validate_and_sanitize_email($email) {
+    // 检查是否为空
+    if (empty($email) || !is_string($email)) {
+        return false;
+    }
+    
+    // 去除首尾空白
+    $email = trim($email);
+    
+    // 限制长度（RFC 5321规定邮箱最大长度为320字符，我们设置更严格的限制）
+    if (strlen($email) > 254) { // 实际邮箱地址部分最大254字符
+        return false;
+    }
+    
+    // 验证邮箱格式（使用PHP内置的filter_var）
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+    
+    // 额外安全检查：确保不包含危险字符或协议
+    // 防止类似 javascript:, data:, mailto: 等协议注入
+    $dangerous_patterns = [
+        '/javascript:/i',
+        '/data:/i',
+        '/vbscript:/i',
+        '/on\w+\s*=/i', // 防止事件处理器
+        '/<script/i',
+        '/<\/script>/i',
+    ];
+    
+    foreach ($dangerous_patterns as $pattern) {
+        if (preg_match($pattern, $email)) {
+            return false;
+        }
+    }
+    
+    // 确保只包含允许的字符（字母、数字、@、.、-、_、+）
+    // filter_var已经验证了基本格式，这里做额外检查
+    if (!preg_match('/^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
+        return false;
+    }
+    
+    // 返回清理后的邮箱地址
+    return $email;
+}
+
+/**
+ * 安全获取邮箱地址
+ * 如果验证失败，返回默认安全值或空字符串
+ * 
+ * @return string 验证通过的邮箱地址
+ */
+function get_safe_email() {
+    global $config;
+    $email = $config['email'] ?? '';
+    $validated_email = validate_and_sanitize_email($email);
+    
+    // 如果验证失败，返回空字符串（前端会处理这种情况）
+    return $validated_email !== false ? $validated_email : '';
+}
 ?>

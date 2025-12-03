@@ -2650,6 +2650,83 @@ function initEmailQR() {
     }
 }
 
+/**
+ * 验证邮箱地址格式（客户端安全验证）
+ * 防止恶意邮箱注入，确保只允许标准邮箱格式
+ * 
+ * @param {string} email 邮箱地址
+ * @returns {boolean} 验证通过返回true，否则返回false
+ */
+function validateEmailFormat(email) {
+    if (!email || typeof email !== 'string') {
+        return false;
+    }
+    
+    // 去除首尾空白
+    email = email.trim();
+    
+    // 长度限制（RFC 5321规定邮箱最大长度为320字符，我们设置更严格的限制）
+    if (email.length === 0 || email.length > 254) {
+        return false;
+    }
+    
+    // 使用正则表达式验证邮箱格式
+    // 标准邮箱格式：local-part@domain
+    // local-part: 允许字母、数字、点、下划线、连字符、加号
+    // domain: 允许字母、数字、点、连字符，至少一个点，最后是顶级域名
+    const emailRegex = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+        return false;
+    }
+    
+    // 额外安全检查：防止危险字符或协议注入
+    const dangerousPatterns = [
+        /javascript:/i,
+        /data:/i,
+        /vbscript:/i,
+        /on\w+\s*=/i,  // 防止事件处理器
+        /<script/i,
+        /<\/script>/i,
+        /<iframe/i,
+        /<\/iframe>/i,
+    ];
+    
+    for (let pattern of dangerousPatterns) {
+        if (pattern.test(email)) {
+            return false;
+        }
+    }
+    
+    // 确保不包含控制字符
+    if (/[\x00-\x1F\x7F]/.test(email)) {
+        return false;
+    }
+    
+    return true;
+}
+
+/**
+ * 安全获取邮箱地址
+ * 从DOM中获取并验证邮箱地址
+ * 
+ * @returns {string|null} 验证通过的邮箱地址，失败返回null
+ */
+function getSafeEmailAddress() {
+    const emailDataElement = document.getElementById('email-data');
+    if (!emailDataElement) {
+        return null;
+    }
+    
+    const emailAddress = emailDataElement.getAttribute('data-email') || '';
+    
+    // 验证邮箱格式
+    if (!validateEmailFormat(emailAddress)) {
+        return null;
+    }
+    
+    return emailAddress;
+}
+
 // 生成邮箱二维码
 function generateEmailQR() {
     const emailQRCode = document.getElementById('email-qr-code');
@@ -2662,16 +2739,19 @@ function generateEmailQR() {
     emailQRCode.innerHTML = '<div class="text-muted"><i class="fas fa-spinner fa-spin me-1"></i>Generating...</div>';
     
     try {
-        // 从HTML元素获取邮箱地址
-        const emailDataElement = document.getElementById('email-data');
-        const emailAddress = emailDataElement ? emailDataElement.getAttribute('data-email') : '';
+        // 安全获取并验证邮箱地址
+        const emailAddress = getSafeEmailAddress();
         
         if (!emailAddress) {
-            emailQRCode.innerHTML = '<div class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i>Email address not found</div>';
+            const currentLang = getCurrentLanguage();
+            const errorMsg = currentLang === 'jp' 
+                ? '無効なメールアドレスです' 
+                : 'Invalid email address';
+            emailQRCode.innerHTML = `<div class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i>${errorMsg}</div>`;
             return;
         }
         
-        // 使用在线QR API生成二维码
+        // 使用在线QR API生成二维码（邮箱地址已经过验证，可以安全使用）
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(emailAddress)}`;
         
         // 创建图片元素
@@ -2715,17 +2795,19 @@ function generateEmailQR() {
 // 复制邮箱地址到剪贴板
 function copyEmailToClipboard() {
     try {
-        // 从HTML元素获取邮箱地址
-        const emailDataElement = document.getElementById('email-data');
-        const emailAddress = emailDataElement ? emailDataElement.getAttribute('data-email') : '';
+        // 安全获取并验证邮箱地址
+        const emailAddress = getSafeEmailAddress();
         
         if (!emailAddress) {
             const currentLang = getCurrentLanguage();
-            const message = currentLang === 'jp' ? 'メールアドレスが見つかりません' : 'Email address not found';
+            const message = currentLang === 'jp' 
+                ? '無効なメールアドレスです' 
+                : 'Invalid email address';
             showUserNotification('error', message);
             return;
         }
         
+        // 邮箱地址已经过验证，可以安全复制到剪贴板
         navigator.clipboard.writeText(emailAddress).then(function() {
             const currentLang = getCurrentLanguage();
             const message = currentLang === 'jp' ? 'メールアドレスをコピーしました' : 'Email address copied to clipboard';
